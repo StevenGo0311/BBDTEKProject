@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
+    <ImageView
+        android:id="@+id/list_item_icon"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:src="@drawable/icon_01"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/listview_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/testName"
+            android:textSize="12pt"
+            android:textColor="@color/colorListViewName"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/listview_item_describe"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="@string/testDescribe"
+            android:textSize="7pt"
+            android:textColor="@color/colorListViewDescribe" />
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"/>
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/arrow"
+        android:layout_gravity="center_vertical"/>
+</LinearLayout>

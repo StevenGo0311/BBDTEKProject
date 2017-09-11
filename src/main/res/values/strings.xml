@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">邦音乐</string>
+    <string name="textview_title">邦音乐</string>
+    <string name="button_search">搜索</string>
+    <string name="testName">Papi酱</string>
+    <string name="testDescribe">一个集美貌与才华为一身的女子</string>
+    <string name="title_activity_start">StartActivity</string>
+</resources>

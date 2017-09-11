@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.stevengo.myapplication">
+    <!--定义application,设置icon,label,theme等属性-->
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/application_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <!--StartActivity,闪屏,指定为启动页-->
+        <activity
+            android:name=".activitys.StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <!--mainActivity，主界面-->
+        <activity android:name=".activitys.MainActivity">
+        </activity>
+    </application>
+
+</manifest>

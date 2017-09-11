@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBackground">#f9f9f9</color>
+    <color name="colorTitle">#030303</color>
+    <color name="colorSearch">#030303</color>
+    <color name="colorSearchStroke">#888888</color>
+    <color name="colorPoint">#b2b2b2</color>
+    <color name="colorListViewName">#000000</color>
+    <color name="colorListViewDescribe">#696969</color>
+    <color name="colorDivider">#888888</color>
+</resources>
