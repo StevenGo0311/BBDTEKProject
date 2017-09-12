@@ -1,10 +1,12 @@
 package com.example.stevengo.myapplication.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 if(isActivityAlive){
                     //打印当前id
-                    Log.d("StevenGo","当前位置的id："+mViewPager.getCurrentItem());
+                    //Log.d("StevenGo","当前位置的id："+mViewPager.getCurrentItem());
                     //将显示的Item移动到下一个位置
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
                     mHandler.postDelayed(runnable,delaytime);
@@ -144,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         isActivityAlive=false;
+    }
+    //事件处理绑定到标签
+    public void openSearchActivity(View Source){
+        //Log.d("StevenGo","调用这个函数");
+        Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+        startActivity(intent);
     }
 
 }

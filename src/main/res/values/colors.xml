@@ -11,4 +11,6 @@
     <color name="colorListViewName">#000000</color>
     <color name="colorListViewDescribe">#696969</color>
     <color name="colorDivider">#888888</color>
+    <color name="colorSearchbarBackground">#cccccc</color>
+    <color name="colorText">#232323</color>
 </resources>

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--列表，显示歌手信息-->
+<!--搜索到结果的界面-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_linearlayout_result"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/search_listview_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:divider="@color/colorDivider"
         android:dividerHeight="1dp">
-
     </ListView>
 </LinearLayout>

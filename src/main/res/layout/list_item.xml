@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--歌手信息的列表样式-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -8,6 +9,7 @@
     android:paddingRight="20dp"
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
+    <!--头像-->
     <ImageView
         android:id="@+id/list_item_icon"
         android:layout_width="86dp"
@@ -19,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="0.5"/>
+    <!--姓名和描述-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.5"/>
+    <!--箭头图标-->
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"

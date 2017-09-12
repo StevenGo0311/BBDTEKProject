@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--搜索框-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/colorSearchbarBackground"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/search_background"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingRight="12dp">
+        <!--放大镜的图标-->
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/search_icon"/>
+        <!--搜索框-->
+        <EditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="26dp"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_background"
+            android:hint="@string/default_text"
+            android:layout_marginLeft="4dp"
+            android:maxLines="1"/>
+        <!--搜索按钮-->
+        <Button
+            android:id="@+id/search_button_search"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:background="@drawable/background_button_search"
+            android:text="@string/button_search" />
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
