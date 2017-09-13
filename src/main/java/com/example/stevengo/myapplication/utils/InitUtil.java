@@ -15,7 +15,6 @@ import java.util.Map;
  * @author StevenGo
  * 用于初始化的工具类
  */
-
 public class InitUtil {
     /**轮播图中的图片id*/
     private int[] imageSlideIds;
@@ -31,8 +30,6 @@ public class InitUtil {
     public InitUtil(Context context){
         this.intData(context);
     }
-
-
 
     public void intData(Context context){
         ImageView imageView=null;
@@ -70,9 +67,7 @@ public class InitUtil {
             listItems.add(listItem);
         }
 
-
     }
-
 
     public List<ImageView> getImageSlide() {
         return imageSlide;

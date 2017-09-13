@@ -1,9 +1,8 @@
-package com.example.stevengo.myapplication.db;
+package com.example.stevengo.myapplication.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by StevenGo on 2017/9/12.
@@ -51,9 +50,7 @@ public class MusicDatabaseHelper extends SQLiteOpenHelper {
         for(int i=0;i<music.length;i++){
             sqLiteDatabase.execSQL(SQL_INSERT_DATA,new String[]{music[i]});
         }
-
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 

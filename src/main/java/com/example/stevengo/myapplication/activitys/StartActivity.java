@@ -24,6 +24,7 @@ public class StartActivity extends AppCompatActivity {
     private Timer mTimer=null;
     /**创建消息处理器*/
     private Handler mHandle=null;
+
     /**设置发送消息开始时间和等待时间*/
     final int STARTMILLIS=1500;
     final int DELAYMILLIS=1500;
@@ -72,7 +73,6 @@ public class StartActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-
             }
         };
     }

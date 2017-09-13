@@ -3,10 +3,6 @@ package com.example.stevengo.myapplication.listeners;
 import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
 
-import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
-
 /**
  * @author StevenGo
  * 自定义PagerViewe的OnPageChangeListener，并重写方法
@@ -25,7 +21,6 @@ public class SlideShowOnPageChangeListener implements ViewPager.OnPageChangeList
     public SlideShowOnPageChangeListener(LinearLayout pointsCon,int imageNum){
         pointsContainer=pointsCon;
         imageNumber=imageNum;
-
     }
     /**重写onPageScrolled的方法，加入改变指示器功能*/
     @Override
@@ -36,11 +31,9 @@ public class SlideShowOnPageChangeListener implements ViewPager.OnPageChangeList
         pointsContainer.getChildAt(newPosition).setEnabled(true);
         previousSelectedItem = newPosition;
     }
-
     @Override
     public void onPageSelected(int position) {
     }
-
     @Override
     public void onPageScrollStateChanged(int state) {
 

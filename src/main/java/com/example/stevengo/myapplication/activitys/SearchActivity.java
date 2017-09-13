@@ -1,8 +1,7 @@
 package com.example.stevengo.myapplication.activitys;
 
+import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,42 +12,62 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.stevengo.myapplication.R;
-import com.example.stevengo.myapplication.listeners.SearchButtonOnClickListener;
+import com.example.stevengo.myapplication.db.SearchMusicDB;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**显示搜索功能的界面*/
 public class SearchActivity extends AppCompatActivity {
     /**输入框*/
     private EditText mEditText;
     /**搜索按钮*/
     private Button mButton;
-    /**搜索结果列表*/
-    private ListView mListView;
     /**搜索结果界面*/
     private LinearLayout mLinearLayoutResult;
     /**索搜空界面*/
     private LinearLayout mLinearLayoutNoResult;
-    /**按钮监听器*/
-    private SearchButtonOnClickListener mSearchButtonOnClickListener;
+
+    /**搜索结果列表*/
+    private ListView mListView;
     /**是否搜索到内容*/
     private boolean isResultExist;
-    /**创建消息处理器*/
-    private Handler mHandler;
-
+    /**记录搜索到的内容*/
+    private List<Map<String,Object>> mList;
+    /**从数据库里查找数据的工具*/
+    private SearchMusicDB mSearchMusicDB;
+    /**获取查到的数据*/
+    private Cursor mCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //加载布局
         setContentView(R.layout.activity_search);
+        //整体初始化
+        init();
+        //给搜索按钮添加单击监听器
+        mButton.setOnClickListener(new View.OnClickListener() {
+            //重写单击事件处理方法
+            @Override
+            public void onClick(View view) {
+                //调用查询音乐的方法
+                searchMusic();
+            }
+        });
+    }
+    /**初始化*/
+    private void init(){
         //初始化试图
         initView();
-        //创建消息处理器
-        createHandler();
-        //初始化单机监听器
-        initListener();
-        //为按钮添加监听器
-        mButton.setOnClickListener(mSearchButtonOnClickListener);
-
+        //创建数据库操作的对象
+        mSearchMusicDB=new SearchMusicDB(this);
+        //创建链表
+        mList=new ArrayList<>();
     }
+    /**
     /**初始化视图*/
     private void initView(){
         //根据id从布局文件中获取组件
@@ -57,50 +76,59 @@ public class SearchActivity extends AppCompatActivity {
         mListView=(ListView)findViewById(R.id.search_listview_result);
         mLinearLayoutResult=(LinearLayout)findViewById(R.id.search_linearlayout_result);
         mLinearLayoutNoResult=(LinearLayout)findViewById(R.id.search_linearlayout_no_result);
+        mEditText=(EditText)findViewById(R.id.search_edit_text);
+
         //设置组件的可见性，默认空界面不可见，有结果的可见，这里显示为空白
         mLinearLayoutResult.setVisibility(View.VISIBLE);
         mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
     }
-    /**初始化监听器*/
-    private void initListener(){
-        //实例化自定义的监听器
-        mSearchButtonOnClickListener=new SearchButtonOnClickListener(this,mEditText,mHandler);
-    }
-    /**创建消息处理器*/
-    private void createHandler() {
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if (msg.what == 0x102) {
-                    //搜索的内容是否存在
-                    isResultExist = mSearchButtonOnClickListener.isResultExist();
-                    //当内容存在的时候，界面切换到有内容的那个，然后把内容显示出来；
-                    //当内容不存在的时候，把界面切换到不存在的那一页，提示没搜到内容
-                    if (isResultExist) {
-                        mLinearLayoutResult.setVisibility(View.VISIBLE);
-                        mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
-                        //创建Adapter
-                        SimpleAdapter result = new SimpleAdapter(getApplicationContext(), mSearchButtonOnClickListener.getSearchtResult(), R.layout.search_sesult_item, new String[]{"musicName"}, new int[]{R.id.textview_search_result});
-                        //添加Adapter
-                        mListView.setAdapter(result);
-                    }
-                    else {
-//                        mLinearLayoutResult.setVisibility(View.VISIBLE);
-//                        mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
-                        //显示没有内容的界面
-                        mLinearLayoutResult.setVisibility(View.GONE);
-                        mLinearLayoutNoResult.setSystemUiVisibility(View.VISIBLE);
-                        //提示没有索搜到内容
-                        Toast.makeText(getApplicationContext(), "搜索内容不存在", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
+    /**通过调用数据库操作对象的方法，获取查询数据*/
+    private void  searchResult(){
+        String searchText="";
+        //获取文本框中用户的输入
+        searchText=mEditText.getText().toString().trim();
+        //检查用户的输入是否为空，空的情况下直接显示查不到结果
+        if(searchText.equals("")){
+            isResultExist=false;
+        }
+        else{
+            //查询数据
+            mCursor=mSearchMusicDB.searchMusicFromTable(searchText);
+            //清理链表中的内容
+            mList.clear();
+            //获取查询到Cursor中的内容，并将其添加到链表中
+            while(mCursor.moveToNext()){
+                Map<String,Object> map=new HashMap<>();
+                map.put("musicName",mCursor.getString(0));
+                mList.add(map);
             }
-
-        };
+            //判断是否找到了数据
+            if(mList.size()==0){
+                isResultExist=false;
+            }
+            else{
+                isResultExist=true;
+            }
+        }
     }
-
-
+    /**根据查询结果修改视图*/
+    private void searchMusic(){
+        searchResult();
+        //判断是否查询到了数据，查到时显示查到的视图
+        if (isResultExist) {
+            mLinearLayoutResult.setVisibility(View.VISIBLE);
+            mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
+            //创建Adapter
+            SimpleAdapter result = new SimpleAdapter(getApplicationContext(), mList, R.layout.search_sesult_item, new String[]{"musicName"}, new int[]{R.id.textview_search_result});
+            //添加Adapter
+            mListView.setAdapter(result);
+        }
+        else {
+            //显示没有内容的界面
+            mLinearLayoutResult.setVisibility(View.GONE);
+            mLinearLayoutNoResult.setSystemUiVisibility(View.VISIBLE);
+            //提示没有索搜到内容
+            Toast.makeText(getApplicationContext(), "搜索内容不存在", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -20,7 +20,6 @@ public class SlideShowAdapter extends PagerAdapter {
         imageList=list;
 
     }
-
     /**1.返回条目的总数*/
     @Override
     public int getCount() {
@@ -28,11 +27,9 @@ public class SlideShowAdapter extends PagerAdapter {
         return Integer.MAX_VALUE;
          //return imageList.size();
     }
-
     /**返回要显示的条目，并创建条目*/
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
         //取模，达到无限循环的效果
         int newPosition = position % imageList.size();
         ImageView imageView = imageList.get(newPosition);
@@ -47,12 +44,10 @@ public class SlideShowAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
     }
-
     /**指定复用的判断逻辑*/
     @Override
     public boolean isViewFromObject(View view, Object object) {
         // 当滑动到新的条目之后，又返回回来，view是否可以被复用
         return view == object;
     }
-
 }

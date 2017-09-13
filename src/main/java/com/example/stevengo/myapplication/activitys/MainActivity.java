@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView point;
     /**轮播指示器*/
     private LinearLayout mPointContainer;
+
     /**用于初始化的工具*/
     private InitUtil initUtil;
     /**控制自动播放*/
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         //给PagerView添加监听器
         addSlideShowOnPageChangeListener();
         //mViewPager.addOnPageChangeListener(new SlideShowOnPageChangeListener(mPointContainer,initUtil.getImageSlide().size()));
-
         //创建新线程
         newRunable();
         //开始自动播放
@@ -107,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{"name","describe","icon"},new int[]{R.id.listview_item_name,
                 R.id.listview_item_describe,
                 R.id.list_item_icon}));
-
     }
     /**初始化工具类*/
     private void initUtils(){
@@ -130,9 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     //将显示的Item移动到下一个位置
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
                     mHandler.postDelayed(runnable,delaytime);
-
                 }
-
             }
         };
     }
