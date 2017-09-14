@@ -6,7 +6,7 @@
     <string name="testDescribe">一个集美貌与才华为一身的女子</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_search">SearchActivity</string>
-    <string name="default_text">二胡</string>
+    <string name="default_text">晴天</string>
     <string name="search_no_result">这里空空如也~</string>
     <string name="title_activity_test">TestActivity</string>
 </resources>

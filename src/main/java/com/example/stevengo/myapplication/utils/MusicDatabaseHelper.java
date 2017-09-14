@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by StevenGo on 2017/9/12.
- * 自定义SQLiteOpenHelper类，重写构造方法和onCreate方法
+ * 自定义的数据库管理类，用于创建和更新数据库
  */
 
 public class MusicDatabaseHelper extends SQLiteOpenHelper {

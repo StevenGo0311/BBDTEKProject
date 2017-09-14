@@ -5,7 +5,7 @@ import android.widget.LinearLayout;
 
 /**
  * @author StevenGo
- * 自定义PagerViewe的OnPageChangeListener，并重写方法
+ * 轮播图显示内容的自定义监听
  */
 
 public class SlideShowOnPageChangeListener implements ViewPager.OnPageChangeListener {
@@ -15,8 +15,6 @@ public class SlideShowOnPageChangeListener implements ViewPager.OnPageChangeList
     private int imageNumber;
     /**记录PagerView中上一个Item*/
     private int previousSelectedItem=0;
-    /**ViewPager*/;
-    private boolean isAutoRun;
 
     public SlideShowOnPageChangeListener(LinearLayout pointsCon,int imageNum){
         pointsContainer=pointsCon;

@@ -13,13 +13,17 @@ import android.widget.Toast;
 
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.db.SearchMusicDB;
+import com.example.stevengo.myapplication.entitys.MusicInfo;
+import com.example.stevengo.myapplication.utils.ReadXMLUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**显示搜索功能的界面*/
+/**
+ * 显示搜索歌曲的界面
+ * */
 public class SearchActivity extends AppCompatActivity {
     /**输入框*/
     private EditText mEditText;
@@ -36,10 +40,12 @@ public class SearchActivity extends AppCompatActivity {
     private boolean isResultExist;
     /**记录搜索到的内容*/
     private List<Map<String,Object>> mList;
-    /**从数据库里查找数据的工具*/
-    private SearchMusicDB mSearchMusicDB;
-    /**获取查到的数据*/
-    private Cursor mCursor;
+//    /**从数据库里查找数据的工具*/
+//    private SearchMusicDB mSearchMusicDB;
+//    /**获取查到的数据*/
+//    private Cursor mCursor;
+    /**记录从XML文件中查到的数据*/
+    private List<MusicInfo> mListContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +68,8 @@ public class SearchActivity extends AppCompatActivity {
     private void init(){
         //初始化试图
         initView();
-        //创建数据库操作的对象
-        mSearchMusicDB=new SearchMusicDB(this);
+//        //创建数据库操作的对象
+//        mSearchMusicDB=new SearchMusicDB(this);
         //创建链表
         mList=new ArrayList<>();
     }
@@ -83,7 +89,36 @@ public class SearchActivity extends AppCompatActivity {
         mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
     }
     /**通过调用数据库操作对象的方法，获取查询数据*/
-    private void  searchResult(){
+//    private void  searchResult(){
+//        String searchText="";
+//        //获取文本框中用户的输入
+//        searchText=mEditText.getText().toString().trim();
+//        //检查用户的输入是否为空，空的情况下直接显示查不到结果
+//        if(searchText.equals("")){
+//            isResultExist=false;
+//        }
+//        else{
+//            //查询数据
+//            mCursor=mSearchMusicDB.searchMusicFromTable(searchText);
+//            //清理链表中的内容
+//            mList.clear();
+//            //获取查询到Cursor中的内容，并将其添加到链表中
+//            while(mCursor.moveToNext()){
+//                Map<String,Object> map=new HashMap<>();
+//                map.put("musicName",mCursor.getString(0));
+//                mList.add(map);
+//            }
+//            //判断是否找到了数据
+//            if(mList.size()==0){
+//                isResultExist=false;
+//            }
+//            else{
+//                isResultExist=true;
+//            }
+//        }
+//    }
+    /**从xml文件中获取数据*/
+    private void searchResultXML(){
         String searchText="";
         //获取文本框中用户的输入
         searchText=mEditText.getText().toString().trim();
@@ -93,13 +128,13 @@ public class SearchActivity extends AppCompatActivity {
         }
         else{
             //查询数据
-            mCursor=mSearchMusicDB.searchMusicFromTable(searchText);
+            mListContent= ReadXMLUtil.GET_MUSIC(this,searchText);
             //清理链表中的内容
             mList.clear();
-            //获取查询到Cursor中的内容，并将其添加到链表中
-            while(mCursor.moveToNext()){
+            //获取查询到mListContent中的内容，并将其添加到链表中
+            for(int i=0;i<mListContent.size();i++){
                 Map<String,Object> map=new HashMap<>();
-                map.put("musicName",mCursor.getString(0));
+                map.put("musicName",mListContent.get(i).getName());
                 mList.add(map);
             }
             //判断是否找到了数据
@@ -113,7 +148,9 @@ public class SearchActivity extends AppCompatActivity {
     }
     /**根据查询结果修改视图*/
     private void searchMusic(){
-        searchResult();
+//        searchResult();
+        //从xml文件中获取数据
+        searchResultXML();
         //判断是否查询到了数据，查到时显示查到的视图
         if (isResultExist) {
             mLinearLayoutResult.setVisibility(View.VISIBLE);

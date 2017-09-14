@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * @author StevenGo
- * 用于初始化的工具类
+ * 用于初始化的工具类，主要包括对首页显示数据的初始化
  */
 public class InitUtil {
     /**轮播图中的图片id*/
