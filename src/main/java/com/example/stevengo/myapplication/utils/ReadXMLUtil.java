@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ReadXMLUtil {
     /**读取xml文件内容*/
-    public static List<MusicInfo> GET_MUSIC(Context context, String searchContent){
+    public static List<MusicInfo> getMusic(Context context, String searchContent){
         //存储符合要求的音乐信息
         List<MusicInfo> list=null;
         //暂存获取到的信息
@@ -45,17 +45,12 @@ public class ReadXMLUtil {
                         break;
                     //扫描节点
                     case XmlPullParser.START_TAG:
+
                         if("music".equals(nodeName)){
                             music=new MusicInfo();
                             //Log.d("StevenGo","读到music");
                         } else if ("name".equals(nodeName)) {
                             music.setName(pullParser.nextText());
-                        }
-                        else if ("phoneticize".equals(nodeName)) {
-                            music.setPhoneticize(pullParser.nextText());
-                        }
-                        else if ("initial".equals(nodeName)) {
-                            music.setInital(pullParser.nextText());
                         }
                         break;
                     //结束节点
@@ -63,7 +58,7 @@ public class ReadXMLUtil {
                         if("music".equals(nodeName)){
                             //Log.d("StevenGo","music.getInital:"+list.size());
                             //判断扫描到的节点的信息是否符合要求
-                            if(music.getName().indexOf(searchContent)!=-1||music.getPhoneticize().indexOf(searchContent)!=-1||music.getInital().indexOf(searchContent)!=-1){
+                            if(music.getName().indexOf(searchContent)!=-1||TransformUtil.toPhonetic(music.getName()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getName()).indexOf(searchContent)!=-1){
                                 //符合要求时加入链表里面，暂存器置空
                                 list.add(music);
                                 music=null;

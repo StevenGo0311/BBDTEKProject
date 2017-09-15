@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         mlayoutParams.topMargin=2;
         mPointContainer=(LinearLayout)findViewById(R.id.point_container);
         //创建指示器中的小圆点，并将其添加到容器中
-        for(int i=0;i<initUtil.getImageSlide().size();i++){
+        for(int i=0;i<initUtil.getImageSlideIds().length;i++){
             point=new ImageView(this);
             point.setBackgroundResource(R.drawable.point);
             point.setLayoutParams(mlayoutParams);
@@ -91,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
     }
     /**初始化Adapter,填充内容*/
     private void initAdapter(){
-        mViewPager.setAdapter(new SlideShowAdapter(initUtil.getImageSlide()));
+        mViewPager.setAdapter(new SlideShowAdapter(this));
         //轮播图的起始位置
         int currentItemId=Integer.MAX_VALUE/2;
         //修正起始位置，使图片从第一个开始
-        while(currentItemId%initUtil.getImageSlide().size()!=0){
+        while(currentItemId%initUtil.getImageSlideIds().length!=0){
             currentItemId++;
         }
         //设置起始图片
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
     /**封装添加监听器的过程*/
     private void addSlideShowOnPageChangeListener(){
-        slideShowOnPageChangeListener=new SlideShowOnPageChangeListener(mPointContainer,initUtil.getImageSlide().size());
+        slideShowOnPageChangeListener=new SlideShowOnPageChangeListener(mPointContainer,initUtil.getImageSlideIds().length);
         mViewPager.addOnPageChangeListener(slideShowOnPageChangeListener);
     }
     /**重写onDestroy,Activity销毁时结束自动播放*/

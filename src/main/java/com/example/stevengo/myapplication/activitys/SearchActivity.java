@@ -1,6 +1,5 @@
 package com.example.stevengo.myapplication.activitys;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.stevengo.myapplication.R;
-import com.example.stevengo.myapplication.db.SearchMusicDB;
 import com.example.stevengo.myapplication.entitys.MusicInfo;
 import com.example.stevengo.myapplication.utils.ReadXMLUtil;
 
@@ -128,7 +126,7 @@ public class SearchActivity extends AppCompatActivity {
         }
         else{
             //查询数据
-            mListContent= ReadXMLUtil.GET_MUSIC(this,searchText);
+            mListContent= ReadXMLUtil.getMusic(this,searchText);
             //清理链表中的内容
             mList.clear();
             //获取查询到mListContent中的内容，并将其添加到链表中
