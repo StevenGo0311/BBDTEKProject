@@ -1,33 +1,69 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <musics>
     <music>
+        <name>带你去旅行</name>
+        <singer>校长</singer>
+    </music>
+    <music>
+        <name>远走高飞</name>
+        <singer>金志文、徐佳莹</singer>
+    </music>
+    <music>
+        <name>我们不一样</name>
+        <singer>大壮</singer>
+    </music>
+    <music>
+        <name>成都</name>
+        <singer>赵雷</singer>
+    </music>
+    <music>
+        <name>消愁</name>
+        <singer>毛不易</singer>
+    </music>
+    <music>
+        <name>凉凉</name>
+        <singer>杨宗纬、张碧晨</singer>
+    </music>
+    <music>
+        <name>在人间</name>
+        <singer>王建房</singer>
+    </music>
+    <music>
+        <name>最美情侣</name>
+        <singer>白小白</singer>
+    </music>
+    <music>
+        <name>刚好遇见你</name>
+        <singer>李玉刚</singer>
+    </music>
+    <music>
+        <name>盗心贼</name>
+        <singer>黑龙</singer>
+    </music>
+    <music>
+        <name>Faded</name>
+        <singer>Alan Walker</singer>
+    </music>
+    <music>
+        <name>演员</name>
+        <singer>薛之谦</singer>
+    </music>
+    <music>
+        <name>勉为其难</name>
+        <singer>王冕</singer>
+    </music>
+    <music>
+        <name>没有你陪伴真的好孤单</name>
+        <singer>梦然</singer>
+    </music>
+    <music>
+        <name>追光者</name>
+        <singer>岑宁儿</singer>
+    </music>
+    <music>
         <name>告白气球</name>
+        <singer>周杰伦</singer>
     </music>
-    <music>
-        <name>晴天</name>
-    </music>
-    <music>
-        <name>稻香</name>
-    </music>
-    <music>
-        <name>双截棍</name>
-    </music>
-    <music>
-        <name>青花瓷</name>
-    </music>
-    <music>
-        <name>给我一首歌的时间</name>
-    </music>
-    <music>
-        <name>霍元甲</name>
-    </music>
-    <music>
-        <name>七里香</name>
-    </music>
-    <music>
-        <name>听妈妈的话</name>
-    </music>
-    <music>
-        <name>简单爱</name>
-    </music>
+
+
 </musics>

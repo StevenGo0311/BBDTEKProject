@@ -8,8 +8,12 @@
     <include
         layout="@layout/fragment_search_bar"/>
     <include
-        layout="@layout/fragment_search_result"/>
-    <include
-        layout="@layout/fragment_search_no_result"/>
-
+        layout="@layout/fragment_search_history"/>
+    <Button
+        android:id="@+id/button_clear"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:text="@string/clear"
+        android:background="@drawable/background_button_clear"
+        android:layout_marginLeft="20dp"/>
 </LinearLayout>

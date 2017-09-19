@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--搜索框-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/colorSearchbarBackground"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/search_background"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingRight="12dp">
+        <!--放大镜的图标-->
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/search_icon"/>
+        <!--搜索框-->
+        <TextView
+            android:id="@+id/search_text"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/testName"
+            android:textSize="9pt"
+            android:textColor="@color/colorText"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -26,6 +26,8 @@ public class ReadXMLUtil {
         List<MusicInfo> list=null;
         //暂存获取到的信息
         MusicInfo music=null;
+        //将内容转换成小写字母
+        searchContent=new String(searchContent).toLowerCase();
         try {
             //获取XmlPullParserFactory和XmlPullParser实例
             XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
@@ -51,6 +53,8 @@ public class ReadXMLUtil {
                             //Log.d("StevenGo","读到music");
                         } else if ("name".equals(nodeName)) {
                             music.setName(pullParser.nextText());
+                        }else if("singer".equals(nodeName)){
+                            music.setSinger(pullParser.nextText());
                         }
                         break;
                     //结束节点
@@ -58,7 +62,8 @@ public class ReadXMLUtil {
                         if("music".equals(nodeName)){
                             //Log.d("StevenGo","music.getInital:"+list.size());
                             //判断扫描到的节点的信息是否符合要求
-                            if(music.getName().indexOf(searchContent)!=-1||TransformUtil.toPhonetic(music.getName()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getName()).indexOf(searchContent)!=-1){
+                            if(music.getName().indexOf(searchContent)!=-1||TransformUtil.toPhonetic(music.getName()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getName()).indexOf(searchContent)!=-1||
+                                music.getSinger().indexOf(searchContent)!=-1||TransformUtil.toPhonetic(music.getSinger()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getSinger()).indexOf(searchContent)!=-1){
                                 //符合要求时加入链表里面，暂存器置空
                                 list.add(music);
                                 music=null;

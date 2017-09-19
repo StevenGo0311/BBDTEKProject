@@ -13,4 +13,8 @@
     <color name="colorDivider">#888888</color>
     <color name="colorSearchbarBackground">#cccccc</color>
     <color name="colorText">#232323</color>
+    <color name="colorHistoryItemBackgroundNotPressed">#edeeed</color>
+    <color name="colorHistoryItemBackgroundPressed">#bbbbbb</color>
+    <color name="colorHistoryItemStroke">#bbbbbb</color>
+    <color name="colorTransparent">#00000000</color>
 </resources>
