@@ -11,7 +11,10 @@ import android.widget.Toast;
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.adapters.SearchResultAdapter;
 import com.example.stevengo.myapplication.entitys.MusicInfo;
+import com.example.stevengo.myapplication.utils.ReadXMLUtil;
+import com.example.stevengo.myapplication.utils.TransformUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +33,9 @@ public class SearchResultActivity extends AppCompatActivity {
 
     /**是否搜索到内容*/
     private boolean isResultExist;
-    //搜索的结果
+    /**记录从XML文件中查到的数据*/
+    private List<MusicInfo> mListContent;
+    /**记录符合要求的数据*/
     private List<MusicInfo> mListSearchResult;
     /**搜索的关键字*/
     private String searchContent;
@@ -49,11 +54,11 @@ public class SearchResultActivity extends AppCompatActivity {
     private void init(){
         //界面初始化
         initView();
-        //获取Intent携带的数据
-        mListSearchResult=(List)getIntent().getSerializableExtra("searchResult");
+        mListContent = ReadXMLUtil.getMusic(SearchResultActivity.this);
 //        isResultExist=getIntent().getBooleanExtra("isResultExist",false);
         searchContent=getIntent().getStringExtra("searchTextContent");
         //当搜索的结果不存在时将isResultExist设置为false
+        mListSearchResult=getCheckMusic(searchContent);
         if(mListSearchResult.size()==0){
             isResultExist=false;
         }
@@ -73,6 +78,26 @@ public class SearchResultActivity extends AppCompatActivity {
         //设置组件的可见性，默认空界面不可见，有结果的可见，这里显示为空白
         mLinearLayoutResult.setVisibility(View.VISIBLE);
         mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
+    }
+    /**从所有数据中检索符合要求的记录*/
+    public List<MusicInfo> getCheckMusic(String searchContent){
+        //创建MusicInfo类型的引用
+        MusicInfo music;
+        //创建记录符合要求的list
+        List<MusicInfo> checkedResult=new ArrayList<>();
+        //将用户输入的内容转化为小写
+        searchContent=searchContent.toLowerCase();
+        //遍历从xml文件中读取到的内容
+        for(int i=0;i<mListContent.size();i++){
+            music=mListContent.get(i);
+            //判断是否符合要求
+            if(music.getName().indexOf(searchContent)!=-1|| TransformUtil.toPhonetic(music.getName()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getName()).indexOf(searchContent)!=-1||
+                    music.getSinger().indexOf(searchContent)!=-1||TransformUtil.toPhonetic(music.getSinger()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getSinger()).indexOf(searchContent)!=-1){
+                //符合要求时加入List里面
+                checkedResult.add(music);
+            }
+        }
+        return checkedResult;
     }
     /**根据查询结果修改视图*/
     private void alterView(){

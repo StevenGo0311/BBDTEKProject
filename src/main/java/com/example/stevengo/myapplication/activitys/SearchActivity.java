@@ -7,19 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.stevengo.myapplication.R;
-import com.example.stevengo.myapplication.entitys.MusicInfo;
 import com.example.stevengo.myapplication.services.DoHistoryServices;
-import com.example.stevengo.myapplication.utils.ReadXMLUtil;
-import com.example.stevengo.myapplication.utils.TransformUtil;
 import com.example.stevengo.myapplication.views.FlowLayout;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,21 +29,16 @@ public class SearchActivity extends AppCompatActivity {
     private Button mButtonClear;
     /**自定义的流式布局*/
     private FlowLayout mFlowLayout;
-    /**设置TextVeiw的参数*/
-    private LinearLayout.LayoutParams mLayoutParams;
 
 //    /**从数据库里查找数据的工具*/
 //    private SearchMusicDB mSearchMusicDB;
 //    /**获取查到的数据*/
 //    private Cursor mCursor;
 
-    /**记录从XML文件中查到的数据*/
-    private List<MusicInfo> mListContent;
     /**记录搜索的关键字*/
     private String editTextContent;
     /**处理历史记录*/
     private DoHistoryServices mDoHistoryServices;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +61,7 @@ public class SearchActivity extends AppCompatActivity {
                     //将清除按钮设置为可见
                     mButtonClear.setVisibility(View.VISIBLE);
                     //刷新显示历史记录的界面
-                    startNewActivity(getCheckMusic(editTextContent),editTextContent);
+                    startNewActivity(editTextContent);
                 }
                 //当输入的内容为空格时直接打印提示信息
                 else {
@@ -93,7 +82,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
-
     /**初始化*/
     private void init() {
         //创建操作历史记录的服务
@@ -103,7 +91,6 @@ public class SearchActivity extends AppCompatActivity {
 //        //创建数据库操作的对象
 //        mSearchMusicDB=new SearchMusicDB(this);
         //从xml文件中读取数据
-        mListContent = ReadXMLUtil.getMusic(SearchActivity.this);
     }
     /**初始化视图*/
     private void initView() {
@@ -116,10 +103,6 @@ public class SearchActivity extends AppCompatActivity {
         mButtonClear=(Button) findViewById(R.id.button_clear);
         //自定义的流式布局
         mFlowLayout = (FlowLayout) findViewById(R.id.search_history);
-        //设置参数的对象
-        mLayoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        //设置边距
-        mLayoutParams.setMargins(40,14,20,14);
         //添加历史记录
         addViewAdapter(mDoHistoryServices.readHistory());
     }
@@ -162,19 +145,18 @@ public class SearchActivity extends AppCompatActivity {
         //根据查询到的历史记录添加组件
         for(int i=0;i<list.size();i++){
             //通过反射加载TexView
-            textView=(TextView) LayoutInflater.from(this).inflate(R.layout.history_item,null);
+            View linearLayout=LayoutInflater.from(this).inflate(R.layout.history_item,null);
+            textView=(TextView) linearLayout.findViewById(R.id.history_item_id);
             //设置TextView显示的内容
             textView.setText(list.get(i));
-            //为textView设置布局参数
-            textView.setLayoutParams(mLayoutParams);
             //将textView添加到容器中
-            mFlowLayout.addView(textView);
+            mFlowLayout.addView(linearLayout);
             //为组件写单击事件
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //启动新的界面
-                    startNewActivity(getCheckMusic(((TextView)view).getText().toString()),((TextView)view).getText().toString());
+                    startNewActivity(((TextView)view).getText().toString());
                 }
             });
         }
@@ -183,31 +165,11 @@ public class SearchActivity extends AppCompatActivity {
             mButtonClear.setVisibility(View.GONE);
         }
     }
-    /**从所有数据中检索符合要求的记录*/
-    public List<MusicInfo> getCheckMusic(String searchContent){
-        //创建MusicInfo类型的引用
-        MusicInfo music;
-        //创建记录符合要求的list
-        List<MusicInfo> checkedResult=new ArrayList<>();
-        //将用户输入的内容转化为小写
-        searchContent=searchContent.toLowerCase();
-        //遍历从xml文件中读取到的内容
-        for(int i=0;i<mListContent.size();i++){
-            music=mListContent.get(i);
-            //判断是否符合要求
-            if(music.getName().indexOf(searchContent)!=-1|| TransformUtil.toPhonetic(music.getName()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getName()).indexOf(searchContent)!=-1||
-                    music.getSinger().indexOf(searchContent)!=-1||TransformUtil.toPhonetic(music.getSinger()).indexOf(searchContent)!=-1||TransformUtil.toFirstPhonetic(music.getSinger()).indexOf(searchContent)!=-1){
-                //符合要求时加入List里面
-                checkedResult.add(music);
-            }
-        }
-        return checkedResult;
-    }
-    public void startNewActivity(List<MusicInfo> searchResult,String searchText){
+
+    public void startNewActivity(String searchText){
         //创建Intent
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         //向Intent添加要携带的数据
-        intent.putExtra("searchResult", (Serializable) searchResult);
         intent.putExtra("searchTextContent",searchText);
         //启动新的activity
         startActivity(intent);
