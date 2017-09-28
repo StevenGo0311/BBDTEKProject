@@ -5,6 +5,7 @@
     android:id="@+id/search_linearlayout_result"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!--
     <ListView
         android:id="@+id/search_listview_result"
         android:layout_width="match_parent"
@@ -12,4 +13,12 @@
         android:divider="@color/colorDivider"
         android:dividerHeight="1dp">
     </ListView>
+    -->
+    <com.example.stevengo.myapplication.views.SearchResultListView
+        android:id="@+id/search_listview_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/colorDivider"
+        android:dividerHeight="1dp">
+    </com.example.stevengo.myapplication.views.SearchResultListView>
 </LinearLayout>

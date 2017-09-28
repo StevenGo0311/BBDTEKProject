@@ -1,8 +1,13 @@
 package com.example.stevengo.myapplication.activitys;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +44,8 @@ public class SearchActivity extends AppCompatActivity {
     private String editTextContent;
     /**处理历史记录*/
     private DoHistoryServices mDoHistoryServices;
+    /**网络是否可用的标志*/
+    private boolean isInternetValid=true;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +98,27 @@ public class SearchActivity extends AppCompatActivity {
 //        //创建数据库操作的对象
 //        mSearchMusicDB=new SearchMusicDB(this);
         //从xml文件中读取数据
+        ConnectivityManager connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        //网络标志初始化为false
+        boolean flag=false;
+        if(connectivityManager!=null){
+            //获取所有连接
+            NetworkInfo[] netWorkInfos=connectivityManager.getAllNetworkInfo();
+            if (netWorkInfos != null) {
+                //遍历连接
+                for (int i = 0; i < netWorkInfos.length; i++) {
+                    //当有连接的时候把标志置为true
+                    if (netWorkInfos[i].getState() == NetworkInfo.State.CONNECTED) {
+                        flag=true;
+                    }
+                }
+            }
+        }
+        //没有得到网络连接时标志设置为false，打印提示
+        if(!flag){
+            isInternetValid=false;
+            Toast.makeText(this, "哎呀，网络好像有毛病~", Toast.LENGTH_SHORT).show();
+        }
     }
     /**初始化视图*/
     private void initView() {
@@ -171,6 +199,7 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         //向Intent添加要携带的数据
         intent.putExtra("searchTextContent",searchText);
+        intent.putExtra("isInternetValid",isInternetValid);
         //启动新的activity
         startActivity(intent);
     }

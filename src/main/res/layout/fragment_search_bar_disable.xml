@@ -32,7 +32,6 @@
             android:layout_weight="1"
             android:layout_marginLeft="4dp"
             android:gravity="center_vertical"
-            android:text="@string/testName"
             android:textSize="9pt"
             android:textColor="@color/colorText"/>
     </LinearLayout>

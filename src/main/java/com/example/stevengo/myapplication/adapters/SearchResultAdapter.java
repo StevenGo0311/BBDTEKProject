@@ -1,6 +1,7 @@
 package com.example.stevengo.myapplication.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,10 @@ public class SearchResultAdapter extends BaseAdapter {
         this.mContext=context;
         this.mListMusicInfo=musicInfo;
     }
+    public void onDataChange(List<MusicInfo> list){
+        this.mListMusicInfo=list;
+        this.notifyDataSetChanged();
+    }
     /**重写返回列表项的数量的方法*/
     @Override
     public int getCount() {
@@ -44,13 +49,25 @@ public class SearchResultAdapter extends BaseAdapter {
     /**重写显示item的方法*/
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        //通过反射取得布局文件
-        View linearLayout= LayoutInflater.from(mContext).inflate(R.layout.search_result_item,null);
-        //取得布局文件中的view
-        TextView textView=(TextView) linearLayout.findViewById(R.id.textview_search_result);
-        //设置其text
-        textView.setText(mListMusicInfo.get(i).getName());
-        //返回linearLayout
-        return linearLayout;
+        //创建实体
+        MusicInfo musicInfo=mListMusicInfo.get(i);
+        ViewHolder viewHolder;
+        if(view==null){
+            viewHolder=new ViewHolder();
+            //从资源文件中读取View
+            view=LayoutInflater.from(mContext).inflate(R.layout.search_result_item,null);
+            viewHolder.textView=(TextView) view.findViewById(R.id.textview_search_result);
+            view.setTag(viewHolder);
+        }else{
+            viewHolder =(ViewHolder) view.getTag();
+
+        }
+        //将音乐设置到textView
+        viewHolder.textView.setText(musicInfo.getName());
+        return view;
+    }
+    //定义组件持有类，防止多次从资源文件读取布局
+    class ViewHolder{
+        TextView textView;
     }
 }
