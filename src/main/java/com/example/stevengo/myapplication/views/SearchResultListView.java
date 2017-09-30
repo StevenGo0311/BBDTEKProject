@@ -56,6 +56,11 @@ public class SearchResultListView extends ListView implements OnScrollListener{
     // 刷新状态；
     final int REFLASHING = 3;
 
+    //滑动方向
+    int slideDirection;
+    final int UP=0;
+    final int DOWN=1;
+
     /**重写一个参数的构造方法，加入初始化视图的功能*/
     public SearchResultListView(Context context) {
         super(context);
@@ -131,14 +136,12 @@ public class SearchResultListView extends ListView implements OnScrollListener{
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         this.scrollState = scrollState;
-        if(lastVisibleItem==totalItemCount&&scrollState==SCROLL_STATE_IDLE){
+        if(lastVisibleItem==totalItemCount&&scrollState==SCROLL_STATE_IDLE&&slideDirection==UP){
             if(!isLoading){
                 isLoading=true;
                 footer.findViewById(R.id.load_layout).setVisibility(View.VISIBLE);
                 iLoadListener.onLoad();
             }
-
-
         }
     }
     /**重写onTouchEvent响应时间，加入对header*/
@@ -190,6 +193,13 @@ public class SearchResultListView extends ListView implements OnScrollListener{
         //防止list无限制的下拉
         if(topPadding>headerHeight+50){
             topPadding=headerHeight+50;
+        }
+        //判断滑动的方向，判断当内容填充不满时的操作
+        if(space<0){
+            slideDirection=UP;
+
+        }else{
+            slideDirection=DOWN;
         }
         //判断当前的状态
         switch (state) {

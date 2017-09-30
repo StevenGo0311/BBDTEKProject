@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.stevengo.myapplication.R;
+import com.example.stevengo.myapplication.entitys.MusicEntity;
 import com.example.stevengo.myapplication.entitys.MusicInfo;
 
 import java.util.List;
@@ -21,13 +22,13 @@ public class SearchResultAdapter extends BaseAdapter {
     /**上下文*/
     private Context mContext;
     /**要显示的bean*/
-    private List<MusicInfo> mListMusicInfo;
+    private List<MusicEntity.TracksBean> mListMusicInfo;
     /**构造方法，初始化成员变量*/
-    public SearchResultAdapter(Context context, List<MusicInfo> musicInfo){
+    public SearchResultAdapter(Context context, List<MusicEntity.TracksBean> musicInfo){
         this.mContext=context;
         this.mListMusicInfo=musicInfo;
     }
-    public void onDataChange(List<MusicInfo> list){
+    public void onDataChange(List<MusicEntity.TracksBean> list){
         this.mListMusicInfo=list;
         this.notifyDataSetChanged();
     }
@@ -50,7 +51,7 @@ public class SearchResultAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         //创建实体
-        MusicInfo musicInfo=mListMusicInfo.get(i);
+        MusicEntity.TracksBean musicInfo=mListMusicInfo.get(i);
         ViewHolder viewHolder;
         if(view==null){
             viewHolder=new ViewHolder();
@@ -63,7 +64,7 @@ public class SearchResultAdapter extends BaseAdapter {
 
         }
         //将音乐设置到textView
-        viewHolder.textView.setText(musicInfo.getName());
+        viewHolder.textView.setText(musicInfo.getTitle());
         return view;
     }
     //定义组件持有类，防止多次从资源文件读取布局

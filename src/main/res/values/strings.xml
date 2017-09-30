@@ -7,7 +7,7 @@
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="default_text">晴天</string>
-    <string name="search_no_result">这里空空如也~</string>
+    <string name="search_no_result">这里空空如也~点击屏幕试试</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="clear">清除</string>
     <string name="pull_for_refresh">下拉可以刷新！</string>

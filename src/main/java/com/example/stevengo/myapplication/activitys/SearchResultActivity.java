@@ -3,9 +3,9 @@ package com.example.stevengo.myapplication.activitys;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,19 +14,26 @@ import android.widget.Toast;
 
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.adapters.SearchResultAdapter;
+import com.example.stevengo.myapplication.entitys.MusicEntity;
 import com.example.stevengo.myapplication.entitys.MusicInfo;
-import com.example.stevengo.myapplication.utils.InternetUtil;
-import com.example.stevengo.myapplication.utils.ReadXMLUtil;
+import com.example.stevengo.myapplication.base.UrlConsTable;
+import com.example.stevengo.myapplication.entitys.Parameter;
+import com.example.stevengo.myapplication.utils.InternetUtilRetrofit;
+import com.example.stevengo.myapplication.utils.InternetUtilURLConnection;
 import com.example.stevengo.myapplication.views.SearchResultListView;
 import com.example.stevengo.myapplication.views.SearchResultListView.IRefreshListener;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by StevenGo on 2017/9/15.
  * 显示搜索结果的Acitivity
  */
-public class SearchResultActivity extends AppCompatActivity implements IRefreshListener,SearchResultListView.ILoadListener{
+public class SearchResultActivity extends AppCompatActivity implements IRefreshListener,SearchResultListView.ILoadListener,UrlConsTable,View.OnClickListener{
     /**显示搜索内容的文本框*/
     private TextView mTextView;
     /**搜索结果界面*/
@@ -38,12 +45,10 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
 
     /**是否搜索到内容*/
     private boolean isResultExist;
-    /**记录从XML文件中查到的数据*/
-    private List<MusicInfo> mListContent;
+//    /**记录从XML文件中查到的数据*/
+//    private List<MusicInfo> mListContent;
     /**记录符合要求的数据*/
-    private List<MusicInfo> mListSearchResult;
-    /**网络是否可用*/
-    private boolean mIsInternetValid;
+    private List<MusicEntity.TracksBean> mListSearchResult;
     /**搜索的关键字*/
     private String searchContent;
     /**加载网络数据时的进度条*/
@@ -51,14 +56,8 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
     /**自定义适配器*/
     private SearchResultAdapter searchResultAdaptar;
 
-    /**Url*/
-    private String url;
-    /**关键字*/
-    private String kw;
-    /**页数*/
-    private int pi;
-    /**页大小*/
-    private int pz;
+    /**请求api的参数*/
+    private Parameter parameter;
     /**操作方式*/
     private int operationForm;
     /**加载更多*/
@@ -121,14 +120,10 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
 //        isResultExist=getIntent().getBooleanExtra("isResultExist",false);
         //读取用户输入的内容
         searchContent=getIntent().getStringExtra("searchTextContent");
-        mIsInternetValid=getIntent().getBooleanExtra("isInternetValid",false);
         //Log.d("StevenGo", "mIsInternetValid: "+mIsInternetValid);
         mTextView.setText(searchContent);
-        //给url,kw,pi,pz赋值
-        url="http://v5.pc.duomi.com/search-ajaxsearch-searchall";
-        kw=searchContent;
-        pi=1;
-        pz=10;
+        //kw,pi,pz赋值
+        parameter=new Parameter(searchContent,1,10);
 //        //当搜索的结果不存在时将isResultExist设置为false
 //        mListSearchResult=getCheckMusic(searchContent);
 //        if(mListSearchResult.size()==0){
@@ -150,12 +145,16 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
         alertDialog=new AlertDialog.Builder(SearchResultActivity.this).create();
         //通过反射加载对话框的显示内容
         alertDialog.setView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_progress,null));
+        //给TextView设置单击监听，点击退回搜索
+        mTextView.setOnClickListener(this);
+        //给没搜索到结果的界面添加监听，点击刷新
+        mLinearLayoutNoResult.setOnClickListener(this);
         //将这个类的对象传给ListView作为回调接口
         mListView.setInterfaceRefresh(this);
         mListView.setInterfaceLoad(this);
-        //设置组件的可见性，默认空界面不可见，有结果的可见，这里显示为空白
-        mLinearLayoutResult.setVisibility(View.VISIBLE);
-        mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
+        //设置组件的可见性，默认空界面可见，有结果的不可见，这里显示为空白
+        mLinearLayoutResult.setVisibility(View.GONE);
+        mLinearLayoutNoResult.setVisibility(View.VISIBLE);
     }
 //    /**从所有数据中检索符合要求的记录*/
 //    public List<MusicInfo> getCheckMusic(String searchContent){
@@ -182,12 +181,12 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
         //判断是否查询到了数据，查到时显示查到的视图
         if (isResultExist) {
             mLinearLayoutResult.setVisibility(View.VISIBLE);
-            mLinearLayoutNoResult.setSystemUiVisibility(View.GONE);
+            mLinearLayoutNoResult.setVisibility(View.GONE);
         }
         else {
             //显示没有内容的界面
             mLinearLayoutResult.setVisibility(View.GONE);
-            mLinearLayoutNoResult.setSystemUiVisibility(View.VISIBLE);
+            mLinearLayoutNoResult.setVisibility(View.VISIBLE);
             //提示没有索搜到内容
             Toast.makeText(getApplicationContext(), "搜索内容不存在", Toast.LENGTH_SHORT).show();
         }
@@ -195,7 +194,7 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
     /**启动新线程，在互联网上查找数据*/
     public void startSearchThread(){
         //判断网络是否可用
-        if(mIsInternetValid){
+        if(InternetUtilURLConnection.isInternetConnected(this)){
             //创建新线程，重写run方法
             new Thread(){
                 @Override
@@ -207,15 +206,18 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
                     //如果操作形式是初始化或者刷新时执行下列操作
                     if(operationForm==INIT||operationForm==REFRESH){
                         //从第一页开始读取数据
-                        pi=1;
-                        mListSearchResult=InternetUtil.doGet(url,kw,pi,pz);
+                        parameter.setPi(1);
+                        //mListSearchResult= InternetUtilURLConnection.doGet(UrlStitch());
+                        mListSearchResult= InternetUtilRetrofit.doGet(parameter);
                     }else{
                         //将读取的所有数据连接到一起
-                        mListSearchResult.addAll(InternetUtil.doGet(url,kw,pi,pz));
+                        if(InternetUtilRetrofit.doGet(parameter)!=null){
+                            mListSearchResult.addAll(InternetUtilRetrofit.doGet(parameter));
+                        }
                     }
                    // Log.d("StevenGo", "run: "+mListSearchResult.size());
                     //判断是否查询到了数据
-                    if(mListSearchResult.size()==0){
+                    if(mListSearchResult.size()==0||mLinearLayoutResult==null){
                         isResultExist=false;
                     }
                     //当查询到记录的时候时候，将isResult的值置为true.
@@ -229,6 +231,20 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
                 }
             }.start();
         }else{
+            //判断操作类型，然后执行相应操作
+            if(operationForm==REFRESH){
+                //清空list,修改界面显示，通知listView刷新完成
+                if(mListSearchResult!=null){
+                    mListSearchResult.clear();
+                    isResultExist=false;
+                    alterView();
+                    mListView.refreshComplete();
+                }
+
+            }else if(operationForm==LOAD){
+                //通知刷新完成
+                mListView.loadComplete();
+            }
             Toast.makeText(this, "哎呀，网络好像有毛病了~", Toast.LENGTH_SHORT).show();
         }
     }
@@ -244,7 +260,21 @@ public class SearchResultActivity extends AppCompatActivity implements IRefreshL
     public void onLoad() {
         operationForm=LOAD;
         //读取下一页数据
-        pi++;
+        parameter.setPi(parameter.getPi()+1);
         startSearchThread();
+    }
+    @Override
+    public void onClick(View view) {
+        //判断事件源，执行相应的操作
+        switch (view.getId()){
+            //结束本activity
+            case R.id.search_text:
+                this.finish();
+                break;
+            //刷新
+            case R.id.search_linearlayout_no_result:
+                onRefresh();
+                break;
+        }
     }
 }
