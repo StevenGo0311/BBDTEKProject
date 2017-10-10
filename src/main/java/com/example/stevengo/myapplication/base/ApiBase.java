@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 
 public interface ApiBase {
    /**采用GET注解，字符串的内容为相对路径*/
-    @GET("/search-ajaxsearch-searchall")
+    @GET(UrlConsTable.URL_SAS)
     /**声明从网络读取数据的方法*/
     Call<MusicEntity> getMusic(@Query("kw")String music_kw,@Query("pi")int music_pi,@Query("pz")int music_pz);
 }
