@@ -303,7 +303,7 @@ public class SearchResultListView extends ListView implements OnScrollListener{
         isLoading=false;
         footer.findViewById(R.id.load_layout).setVisibility(View.GONE);
     }
-    /**刷新数据结构*/
+    /**刷新数据接口*/
     public interface IRefreshListener{
         public void onRefresh();
     }

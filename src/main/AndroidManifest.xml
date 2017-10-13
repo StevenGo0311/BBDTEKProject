@@ -24,16 +24,8 @@
         <!--搜索界面-->
         <activity android:name=".activitys.SearchActivity">
         </activity>
-        <!--测试界面-->
-        <activity android:name=".activitys.TestActivity">
-
-
-
-        </activity>
         <!--搜索结果-->
-        <activity android:name=".activitys.SearchResultActivity">
-
-        </activity>
+        <activity android:name=".activitys.SearchResultActivity"></activity>
     </application>
 
 </manifest>

@@ -16,21 +16,25 @@ import com.example.stevengo.myapplication.adapters.SlideShowAdapter;
 import com.example.stevengo.myapplication.listeners.SlideShowOnPageChangeListener;
 import com.example.stevengo.myapplication.utils.InitUtil;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  *@author StevenGo
  * 主界面，加载自定义的actionbar,轮播图和列表，并对这些组件进行初始化
  */
 public class MainActivity extends AppCompatActivity {
     /**轮播图*/
-    private ViewPager mViewPager;
-    /**列表*/
-    private ListView mListView;
+    @BindView(R.id.viewpager) ViewPager mViewPager;
+    /**显示歌手信息的listView*/
+    @BindView(R.id.list) ListView mListView;
+    /**轮播指示器*/
+    @BindView(R.id.point_container) LinearLayout mPointContainer;
+
     /**管理轮播指示器圆点的容器*/
     private LinearLayout.LayoutParams mlayoutParams;
     /**轮播指示器中的圆点*/
     private ImageView point;
-    /**轮播指示器*/
-    private LinearLayout mPointContainer;
 
     /**用于初始化的工具*/
     private InitUtil initUtil;
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         //初始化工具
         initUtils();
         //初始化试图
@@ -68,17 +73,11 @@ public class MainActivity extends AppCompatActivity {
     }
     /**初始化视图*/
     private void initViews(){
-        //根据Id获取界面组件
-        mViewPager=(ViewPager)findViewById(R.id.viewpager);
-        mListView=(ListView)findViewById(R.id.list);
-        mPointContainer=(LinearLayout)findViewById(R.id.point_container);
-
         mlayoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         //设置圆点之间的距离
         mlayoutParams.leftMargin=15;
         mlayoutParams.topMargin=2;
-        mPointContainer=(LinearLayout)findViewById(R.id.point_container);
         //创建指示器中的小圆点，并将其添加到容器中
         for(int i=0;i<initUtil.getImageSlideIds().length;i++){
             point=new ImageView(this);
@@ -123,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(isActivityAlive){
-                    //打印当前id
-                    //Log.d("StevenGo","当前位置的id："+mViewPager.getCurrentItem());
                     //将显示的Item移动到下一个位置
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
                     mHandler.postDelayed(runnable,delaytime);

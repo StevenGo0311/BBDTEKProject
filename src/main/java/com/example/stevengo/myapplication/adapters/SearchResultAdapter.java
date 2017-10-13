@@ -1,7 +1,6 @@
 package com.example.stevengo.myapplication.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,11 @@ import android.widget.TextView;
 
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.entitys.MusicEntity;
-import com.example.stevengo.myapplication.entitys.MusicInfo;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @author StevenGo
@@ -54,10 +55,11 @@ public class SearchResultAdapter extends BaseAdapter {
         MusicEntity.TracksBean musicInfo=mListMusicInfo.get(i);
         ViewHolder viewHolder;
         if(view==null){
-            viewHolder=new ViewHolder();
+
             //从资源文件中读取View
             view=LayoutInflater.from(mContext).inflate(R.layout.search_result_item,null);
-            viewHolder.textView=(TextView) view.findViewById(R.id.textview_search_result);
+            //viewHolder.textView=(TextView) view.findViewById(R.id.textview_search_result);
+            viewHolder=new ViewHolder(view);
             view.setTag(viewHolder);
         }else{
             viewHolder =(ViewHolder) view.getTag();
@@ -69,6 +71,9 @@ public class SearchResultAdapter extends BaseAdapter {
     }
     //定义组件持有类，防止多次从资源文件读取布局
     class ViewHolder{
-        TextView textView;
+        @BindView(R.id.textview_search_result) TextView textView;
+        public ViewHolder(View view){
+            ButterKnife.bind(this,view);
+        }
     }
 }
