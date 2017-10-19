@@ -1,33 +1,43 @@
 package com.example.stevengo.myapplication.activitys;
 
+import android.Manifest;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.stevengo.myapplication.*;
+import com.example.stevengo.myapplication.base.UrlConsTable;
+import com.example.stevengo.myapplication.entitys.ParameterLocation;
+import com.example.stevengo.myapplication.services.InternetServiceLocation;
+import com.example.stevengo.myapplication.services.InternetServiceLocation.GetLocation;
+
+import com.example.stevengo.myapplication.utils.LocationUtil;
+import com.example.stevengo.myapplication.utils.PermissionsChecker;
 
 /**
  * @author StevenGo
- * 闪频，打开应用程序时显示该界面，1.5s后跳转到主界面
+ * 闪频，检测系统权限，初始化定位
  * */
-public class StartActivity extends AppCompatActivity{
-    /**创建消息处理器*/
-    private Handler mHandler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            //启动MainActivity
-            Intent intent = new Intent(StartActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+public class StartActivity extends AppCompatActivity implements GetLocation {
+    /**
+     * 需要进行检测的权限数组
+     */
+    protected String[] needPermissions = {
+            Manifest.permission.INTERNET,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
-    /**设置发送消息等待时间*/
-    final int DELAYMILLIS=1500;
+    private static final int REQUEST_CODE = 0;
+    private PermissionsChecker mPermissionsChecker;
+    private InternetServiceLocation internetServiceLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +47,43 @@ public class StartActivity extends AppCompatActivity{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //加载布局
         setContentView(R.layout.activity_start);
-        mHandler.sendEmptyMessageDelayed(0,DELAYMILLIS);
+        mPermissionsChecker=new PermissionsChecker(this);
+        internetServiceLocation=new InternetServiceLocation(this);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(needPermissions)) {
+            startPermissionsActivity();
+        }else{
+            Location location= LocationUtil.getLocation(getApplicationContext());
+            if(location!=null){
+                String locationString=location.getLongitude()+","+location.getLatitude();
+                internetServiceLocation.doGet(this,new ParameterLocation(UrlConsTable.LOCATION_KEY,locationString));
+                Log.d("StevenGo",locationString);
+            }
+        }
+    }
+
+
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, needPermissions);
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
+        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            finish();
+        }
+    }
+    @Override
+    public void getLocation(String province, String district) {
+        Intent intent=new Intent(this,MainActivity.class);
+        intent.putExtra("province",province);
+        intent.putExtra("district",district);
+        startActivity(intent);
+        finish();
     }
 }

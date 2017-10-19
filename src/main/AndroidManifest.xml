@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.stevengo.myapplication">
-    <!--声明网络访问权限-->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 允许程序设置内置sd卡的写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 允许程序访问WiFi网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <meta-data
+        android:name="com.amap.api.v2.apikey"
+        android:value="3ccdd945a03cd8db1963a6b07e6e2f61" />
+
     <!-- 定义application,设置icon,label,theme等属性 -->
     <application
         android:allowBackup="true"
@@ -11,6 +27,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!-- StartActivity,闪屏,指定为启动页 -->
         <activity android:name=".activitys.StartActivity">
             <intent-filter>
@@ -19,13 +36,15 @@
             </intent-filter>
         </activity>
         <!-- mainActivity，主界面 -->
-        <activity android:name=".activitys.MainActivity">
+        <activity android:name=".activitys.MainActivity" />
+        <!-- 搜索界面 -->
+        <activity android:name=".activitys.SearchActivity" />
+        <!-- 搜索结果 -->
+        <activity android:name=".activitys.SearchResultActivity" />
+        <activity android:name=".activitys.MapActivity" >
+
         </activity>
-        <!--搜索界面-->
-        <activity android:name=".activitys.SearchActivity">
-        </activity>
-        <!--搜索结果-->
-        <activity android:name=".activitys.SearchResultActivity"></activity>
+        <activity android:name=".activitys.PermissionsActivity" />
     </application>
 
 </manifest>

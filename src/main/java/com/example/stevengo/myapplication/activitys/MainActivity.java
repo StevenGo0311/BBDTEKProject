@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.adapters.SlideShowAdapter;
@@ -18,6 +19,7 @@ import com.example.stevengo.myapplication.utils.InitUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  *@author StevenGo
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.list) ListView mListView;
     /**轮播指示器*/
     @BindView(R.id.point_container) LinearLayout mPointContainer;
+    @BindView(R.id.textview_location_province)TextView mTextViewProvince;
+    @BindView(R.id.textview_location_city)TextView mTextViewCity;
+    @BindView(R.id.linearlayout_location)LinearLayout mLinearLayout;
 
     /**管理轮播指示器圆点的容器*/
     private LinearLayout.LayoutParams mlayoutParams;
@@ -73,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     }
     /**初始化视图*/
     private void initViews(){
+        mTextViewProvince.setText(getIntent().getStringExtra("province"));
+        mTextViewCity.setText(getIntent().getStringExtra("district"));
         mlayoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         //设置圆点之间的距离
@@ -144,6 +151,11 @@ public class MainActivity extends AppCompatActivity {
     public void openSearchActivity(View Source){
         //Log.d("StevenGo","调用这个函数");
         Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+        startActivity(intent);
+    }
+    @OnClick(R.id.linearlayout_location)
+    public void startMapActivity(View view){
+        Intent intent=new Intent(this,MapActivity.class);
         startActivity(intent);
     }
 

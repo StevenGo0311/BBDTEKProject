@@ -26,6 +26,12 @@ public class InternetServiceRetrofit {
     /**创建LoadMusic类型的变量*/
     private LoadMusic loadMusic;
     /**从互联网读取数据*/
+    public InternetServiceRetrofit(){
+
+    }
+    public InternetServiceRetrofit(LoadMusic loadMusic){
+        this.loadMusic=loadMusic;
+    }
     public  void doGet(Parameter parameter) {
         //记录从互联上网得到的所有音乐的信息
         Retrofit retrofit=new Retrofit.Builder()
