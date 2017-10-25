@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -71,23 +72,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //2.将当前点击的按钮设置为选中状态
         //3.将上一个fragment弹出栈
         //4.修改fragment
+        Log.d("StevenGo",String.valueOf(fragmentManager.getBackStackEntryCount()));
         switch (view.getId()){
             case R.id.id_imageview_icon_music:
                 clearIcon();
                 mIconMusic.setSelected(true);
-                fragmentManager.popBackStack();
+                popBackstacks();
                 changeFragment(new MusicFragment());
                 break;
             case R.id.id_imageview_icon_info:
                 clearIcon();
                 mIconInfo.setSelected(true);
-                fragmentManager.popBackStack();
+                popBackstacks();
                 changeFragment(new InfoFragment());
                 break;
             case R.id.id_imageview_icon_my:
                 clearIcon();
                 mIconMy.setSelected(true);
-                fragmentManager.popBackStack();
+                popBackstacks();
                 changeFragment(new MyFragment());
                 break;
         }
@@ -98,5 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         transaction.replace(R.id.id_linearlayout_main,fragment);
         //transaction.addToBackStack(null);
         transaction.commit();
+    }
+    /**弹出返回栈中的内容*/
+    private void popBackstacks(){
+        int count=fragmentManager.getBackStackEntryCount();
+        for(int i=0;i<count;i++){
+            fragmentManager.popBackStack();
+        }
     }
 }
