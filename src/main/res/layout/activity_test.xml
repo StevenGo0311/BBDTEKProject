@@ -5,13 +5,13 @@
     android:id="@+id/search_linearlayout_no_result"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:background="#454545">
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:text="@string/search_no_result"
         android:gravity="center"
-        android:text="@string/search_no_result"/>
+        android:textSize="80sp"/>
 
 </LinearLayout>

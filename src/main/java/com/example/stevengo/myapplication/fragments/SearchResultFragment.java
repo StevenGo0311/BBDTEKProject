@@ -1,10 +1,11 @@
-package com.example.stevengo.myapplication.activitys;
+package com.example.stevengo.myapplication.fragments;
 
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,8 +17,6 @@ import com.example.stevengo.myapplication.entitys.Parameter;
 import com.example.stevengo.myapplication.services.InternetServiceRetrofit;
 import com.example.stevengo.myapplication.utils.GeneralUtil;
 import com.example.stevengo.myapplication.views.SearchResultListView;
-import com.example.stevengo.myapplication.views.SearchResultListView.IRefreshListener;
-import com.example.stevengo.myapplication.views.SearchResultListView.ILoadListener;
 
 import java.util.List;
 
@@ -26,18 +25,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by StevenGo on 2017/9/15.
- * 显示搜索结果的Acitivity
+ *显示结果的fragment
  */
-public class SearchResultActivity extends AppCompatActivity implements
-        InternetServiceRetrofit.LoadMusic,IRefreshListener,ILoadListener{
-
+public class SearchResultFragment extends Fragment implements
+        InternetServiceRetrofit.LoadMusic,SearchResultListView.IRefreshListener,SearchResultListView.ILoadListener {
     /**显示搜索内容的文本框*/
     @BindView(R.id.search_text) TextView mTextView;
-    /**搜索结果界面*/
-    @BindView(R.id.search_linearlayout_result) LinearLayout mLinearLayoutResult;
     /**索搜空界面*/
-    @BindView(R.id.search_linearlayout_no_result) LinearLayout mLinearLayoutNoResult;
+    @BindView(R.id.search_no_result_textView) TextView mTextViewSearchNoresult;
     /**搜索结果列表*/
     @BindView(R.id.search_listview_result) SearchResultListView mListView;
 
@@ -65,11 +60,10 @@ public class SearchResultActivity extends AppCompatActivity implements
     /**读取网络照片的*/
     private InternetServiceRetrofit internetServiceRetrofit;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_result);
-        //绑定组件
-        ButterKnife.bind(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.fragment_search_result,null);
+        ButterKnife.bind(this,view);
         internetServiceRetrofit=new InternetServiceRetrofit();
         //初始化视图
         initView();
@@ -78,17 +72,18 @@ public class SearchResultActivity extends AppCompatActivity implements
         operationForm=INIT;
         //从网络读取音乐信息
         getMusic();
+        return view;
     }
     /**初始化视图*/
     private void initView(){
         //设置组件的可见性，默认空界面可见，有结果的不可见，这里显示为空白
-         alterView();
+        alterView();
         //读取用户输入的内容
-        searchContent=getIntent().getStringExtra("searchTextContent");
+        searchContent=getArguments().getString("searchTextContent");
         mTextView.setText(searchContent);
         //创建一个对话框
-        dialogProgress=new AlertDialog.Builder(this)
-                .setView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_progress,null))
+        dialogProgress=new AlertDialog.Builder(getActivity())
+                .setView(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_progress,null))
                 .create();
         //将这个类的对象传给ListView作为回调接口
         mListView.setInterfaceRefresh(this);
@@ -100,26 +95,26 @@ public class SearchResultActivity extends AppCompatActivity implements
     private void alterView(){
         //判断是否查询到了数据，查到时显示查到的视图
         if (isResultExist) {
-            mLinearLayoutResult.setVisibility(View.VISIBLE);
-            mLinearLayoutNoResult.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
+            mTextViewSearchNoresult.setVisibility(View.GONE);
         }
         else {
             //显示没有内容的界面
-            mLinearLayoutResult.setVisibility(View.GONE);
-            mLinearLayoutNoResult.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.GONE);
+            mTextViewSearchNoresult.setVisibility(View.VISIBLE);
         }
     }
     /**给组件绑定单击事件*/
-    @OnClick({R.id.search_text,R.id.search_linearlayout_no_result})
+    @OnClick({R.id.search_text,R.id.search_no_result_textView})
     public void buttonOnClick(View view){
         //判断事件源，执行相应的操作
         switch (view.getId()){
             //结束本activity
             case R.id.search_text:
-                this.finish();
+                getFragmentManager().popBackStack();
                 break;
             //刷新
-            case R.id.search_linearlayout_no_result:
+            case R.id.search_no_result_textView:
                 onRefresh();
                 break;
         }
@@ -127,13 +122,15 @@ public class SearchResultActivity extends AppCompatActivity implements
     /**从互联网上获取音乐信息*/
     public void getMusic(){
         //首先判断网络是否可用，网络可用时进行搜索，不可用时修改界面，弹出提示
-        if(GeneralUtil.isInternetConnected(this)){
+        if(GeneralUtil.isInternetConnected(getActivity())){
             isResultExist=true;
             internetServiceRetrofit.doGet(parameter);
+            alterView();
+
         }else{
             isResultExist=false;
             alterView();
-            Toast.makeText(this, "网络貌似不能用~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "网络貌似不能用~", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -168,7 +165,7 @@ public class SearchResultActivity extends AppCompatActivity implements
         if(operationForm==INIT||operationForm==REFRESH){
             mListSearchResult=tracksBeen;
         }else{
-                mListSearchResult.addAll(tracksBeen);
+            mListSearchResult.addAll(tracksBeen);
         }
         //3.根据结果修改界面显示
         if(mListSearchResult.size()==0){
@@ -181,7 +178,7 @@ public class SearchResultActivity extends AppCompatActivity implements
         alterView();
         //为listView设置内容
         if(searchResultAdaptar ==null){
-            searchResultAdaptar =new SearchResultAdapter(getApplicationContext(),mListSearchResult);
+            searchResultAdaptar =new SearchResultAdapter(getActivity(),mListSearchResult);
             mListView.setAdapter(searchResultAdaptar);
         }else{
             searchResultAdaptar.onDataChange(mListSearchResult);
@@ -190,4 +187,5 @@ public class SearchResultActivity extends AppCompatActivity implements
         mListView.refreshComplete();
         mListView.loadComplete();
     }
+
 }

@@ -59,6 +59,5 @@
         android:layout_marginRight="12dp"
         android:textSize="8pt"
         android:textColor="@color/colorTitle"
-        android:background="@drawable/background_button_search"
-        android:onClick="openSearchActivity"/>
+        android:background="@drawable/background_button_search" />
 </RelativeLayout>

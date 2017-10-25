@@ -7,7 +7,7 @@
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="default_text">晴天</string>
-    <string name="search_no_result">这里空空如也~点击屏幕试试</string>
+    <string name="search_no_result">\n\n\n\n\n\n\n这里空空如也~点击屏幕试试\n\n\n\n\n\n\n</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="clear">清除</string>
     <string name="pull_for_refresh">下拉可以刷新！</string>
@@ -19,4 +19,7 @@
     <string name="help">帮助</string>
     <string name="string_help_text">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
     <string name="quit">退出</string>
+    <string name="music">音乐</string>
+    <string name="my">我的</string>
+    <string name="info">资讯</string>
 </resources>

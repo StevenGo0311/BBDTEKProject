@@ -32,7 +32,7 @@ public class InternetServiceLocation {
     public InternetServiceLocation(GetLocation getLocation){
         this.getLocation=getLocation;
     }
-    public  void doGet(final Context context, ParameterLocation parameterLocation) {
+    public void doGet(final Context context, ParameterLocation parameterLocation) {
         //记录从互联上网得到的所有音乐的信息
         Retrofit retrofit=new Retrofit.Builder()
                 //添加baseUrl
@@ -49,13 +49,20 @@ public class InternetServiceLocation {
             public void onResponse(Call<LocationInfo> call, Response<LocationInfo> response) {
                 String province="";
                 String district="";
+                //得到位置信息
                 LocationInfo locationInfo=response.body();
+                //判断是否已经定位
                 if(locationInfo!=null){
                     province=locationInfo.getRegeocode().getAddressComponent().getProvince();
                     district=locationInfo.getRegeocode().getAddressComponent().getDistrict();
-                    getLocation.getLocation(province,district);
+                    //启动新的页面
+                    getLocation.startActivity(province,district);
                 }else{
+                    //打印失败信息，启动新页面
                     Toast.makeText(context,"获取位置失败",Toast.LENGTH_SHORT).show();
+                    province="未得到省份";
+                    district="未得到城市";
+                    getLocation.startActivity(province,district);
                 }
             }
             @Override
@@ -65,6 +72,6 @@ public class InternetServiceLocation {
         });
     }
     public interface GetLocation{
-        void getLocation(String province,String district);
+        void startActivity(String province,String district);
     }
 }

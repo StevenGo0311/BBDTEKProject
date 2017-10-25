@@ -11,4 +11,5 @@
         layout="@layout/fragment_slide_show"/>
     <include
         layout="@layout/fragment_list"/>
+
 </LinearLayout>

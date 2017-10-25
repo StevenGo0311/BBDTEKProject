@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--搜索到结果的界面-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/search_linearlayout_result"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <!--
-    <ListView
-        android:id="@+id/search_listview_result"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include
+        layout="@layout/fragment_search_bar_disable"/>
+
+    <TextView
+        android:id="@+id/search_no_result_textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/colorDivider"
-        android:dividerHeight="1dp">
-    </ListView>
-    -->
+        android:gravity="center"
+        android:text="@string/search_no_result" />
     <com.example.stevengo.myapplication.views.SearchResultListView
         android:id="@+id/search_listview_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:divider="@color/colorDivider"
         android:dividerHeight="1dp">
     </com.example.stevengo.myapplication.views.SearchResultListView>

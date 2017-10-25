@@ -41,9 +41,6 @@
             android:layout_height="26dp"
             android:background="@drawable/background_button_search"
             android:text="@string/button_search" />
-
-
-
     </LinearLayout>
 
 

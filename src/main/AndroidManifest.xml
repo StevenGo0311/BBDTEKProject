@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--允许程序通过gps芯片获取精确定位-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <meta-data
@@ -29,22 +30,20 @@
         android:theme="@style/AppTheme">
 
         <!-- StartActivity,闪屏,指定为启动页 -->
-        <activity android:name=".activitys.StartActivity">
+        <activity android:name=".activitys.StartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- mainActivity，主界面 -->
-        <activity android:name=".activitys.MainActivity" />
-        <!-- 搜索界面 -->
-        <activity android:name=".activitys.SearchActivity" />
-        <!-- 搜索结果 -->
-        <activity android:name=".activitys.SearchResultActivity" />
-        <activity android:name=".activitys.MapActivity" >
-
-        </activity>
+        <activity android:name=".activitys.MainActivity"/>
+        <!--地图页面-->
+        <activity android:name=".activitys.MapActivity" />
+        <!--权限页面-->
         <activity android:name=".activitys.PermissionsActivity" />
+        <!--测试页面-->
+        <activity android:name=".activitys.TestActivity"/>
     </application>
 
 </manifest>

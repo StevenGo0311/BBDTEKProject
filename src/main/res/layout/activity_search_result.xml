@@ -7,7 +7,7 @@
     <include
         layout="@layout/fragment_search_bar_disable"/>
     <include
-        layout="@layout/fragment_search_result"/>
+        layout="@layout/fragment_search_exist_result"/>
     <include
         layout="@layout/fragment_search_no_result"/>
 </LinearLayout>
