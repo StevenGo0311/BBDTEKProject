@@ -1,11 +1,12 @@
-package com.example.stevengo.myapplication.fragments;
+package com.example.stevengo.myapplication.activitys;
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.example.stevengo.myapplication.entitys.Parameter;
 import com.example.stevengo.myapplication.services.InternetServiceRetrofit;
 import com.example.stevengo.myapplication.utils.GeneralUtil;
 import com.example.stevengo.myapplication.views.SearchResultListView;
+import com.example.stevengo.myapplication.views.SearchResultListView.IRefreshListener;
+import com.example.stevengo.myapplication.views.SearchResultListView.ILoadListener;
 
 import java.util.List;
 
@@ -25,16 +28,20 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- *显示结果的fragment
+ * Created by StevenGo on 2017/9/15.
+ * 显示搜索结果的Acitivity
  */
-public class SearchResultFragment extends Fragment implements
-        InternetServiceRetrofit.LoadMusic,SearchResultListView.IRefreshListener,SearchResultListView.ILoadListener {
+public class SearchResultActivity extends BaseActivity implements
+        InternetServiceRetrofit.LoadMusic,IRefreshListener,ILoadListener{
+
     /**显示搜索内容的文本框*/
     @BindView(R.id.search_text) TextView mTextView;
     /**索搜空界面*/
     @BindView(R.id.search_no_result_textView) TextView mTextViewSearchNoresult;
     /**搜索结果列表*/
     @BindView(R.id.search_listview_result) SearchResultListView mListView;
+
+    @BindView(R.id.id_imageview_back_search_result)ImageView mIMageviewSearchResult;
 
     /**是否搜索到内容*/
     private boolean isResultExist;
@@ -60,10 +67,11 @@ public class SearchResultFragment extends Fragment implements
     /**读取网络照片的*/
     private InternetServiceRetrofit internetServiceRetrofit;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_search_result,null);
-        ButterKnife.bind(this,view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_result);
+        //绑定组件
+        ButterKnife.bind(this);
         internetServiceRetrofit=new InternetServiceRetrofit();
         //初始化视图
         initView();
@@ -72,18 +80,24 @@ public class SearchResultFragment extends Fragment implements
         operationForm=INIT;
         //从网络读取音乐信息
         getMusic();
-        return view;
     }
+
+    @Override
+    protected View getCustomerActionBar() {
+        return null;
+    }
+
     /**初始化视图*/
     private void initView(){
         //设置组件的可见性，默认空界面可见，有结果的不可见，这里显示为空白
-        alterView();
+         alterView();
         //读取用户输入的内容
-        searchContent=getArguments().getString("searchTextContent");
+        searchContent=getIntent().getStringExtra("searchTextContent");
+        Log.d("StevenGo","SearchContent"+searchContent);
         mTextView.setText(searchContent);
         //创建一个对话框
-        dialogProgress=new AlertDialog.Builder(getActivity())
-                .setView(LayoutInflater.from(getActivity()).inflate(R.layout.dialog_progress,null))
+        dialogProgress=new AlertDialog.Builder(this)
+                .setView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_progress,null))
                 .create();
         //将这个类的对象传给ListView作为回调接口
         mListView.setInterfaceRefresh(this);
@@ -111,7 +125,7 @@ public class SearchResultFragment extends Fragment implements
         switch (view.getId()){
             //结束本activity
             case R.id.search_text:
-                getFragmentManager().popBackStack();
+                this.finish();
                 break;
             //刷新
             case R.id.search_no_result_textView:
@@ -122,15 +136,13 @@ public class SearchResultFragment extends Fragment implements
     /**从互联网上获取音乐信息*/
     public void getMusic(){
         //首先判断网络是否可用，网络可用时进行搜索，不可用时修改界面，弹出提示
-        if(GeneralUtil.isInternetConnected(getActivity())){
+        if(GeneralUtil.isInternetConnected(this)){
             isResultExist=true;
             internetServiceRetrofit.doGet(parameter);
-            alterView();
-
         }else{
             isResultExist=false;
             alterView();
-            Toast.makeText(getActivity(), "网络貌似不能用~", Toast.LENGTH_SHORT).show();
+            showToast("网络貌似不能用~");
         }
     }
 
@@ -165,7 +177,7 @@ public class SearchResultFragment extends Fragment implements
         if(operationForm==INIT||operationForm==REFRESH){
             mListSearchResult=tracksBeen;
         }else{
-            mListSearchResult.addAll(tracksBeen);
+                mListSearchResult.addAll(tracksBeen);
         }
         //3.根据结果修改界面显示
         if(mListSearchResult.size()==0){
@@ -178,7 +190,7 @@ public class SearchResultFragment extends Fragment implements
         alterView();
         //为listView设置内容
         if(searchResultAdaptar ==null){
-            searchResultAdaptar =new SearchResultAdapter(getActivity(),mListSearchResult);
+            searchResultAdaptar =new SearchResultAdapter(getApplicationContext(),mListSearchResult);
             mListView.setAdapter(searchResultAdaptar);
         }else{
             searchResultAdaptar.onDataChange(mListSearchResult);
@@ -187,5 +199,8 @@ public class SearchResultFragment extends Fragment implements
         mListView.refreshComplete();
         mListView.loadComplete();
     }
-
+    @OnClick(R.id.id_imageview_back_search_result)
+    public void backSearchResult(View view){
+        finish();
+    }
 }

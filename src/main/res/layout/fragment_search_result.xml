@@ -8,13 +8,13 @@
         layout="@layout/fragment_search_bar_disable"/>
 
     <TextView
-        android:id="@+id/search_no_result_textView"
+        android:id="@+id/search_no_result_textView_"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/search_no_result" />
     <com.example.stevengo.myapplication.views.SearchResultListView
-        android:id="@+id/search_listview_result"
+        android:id="@+id/search_listview_result__"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/colorDivider"

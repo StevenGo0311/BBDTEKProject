@@ -11,7 +11,7 @@
         android:layout_height="240dp">
         <!--轮播图-->
         <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+            android:id="@+id/viewpager_slideshow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -35,7 +35,7 @@
         </LinearLayout>
     </RelativeLayout>
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/listview_singer_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/colorDivider"

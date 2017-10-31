@@ -18,8 +18,10 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.example.stevengo.myapplication.BangMusicApplication;
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.activitys.MapActivity;
+import com.example.stevengo.myapplication.activitys.SearchActivity;
 import com.example.stevengo.myapplication.adapters.SlideShowAdapter;
 import com.example.stevengo.myapplication.listeners.SlideShowOnPageChangeListener;
 import com.example.stevengo.myapplication.utils.InitUtil;
@@ -30,13 +32,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- *
+ *音乐页面的fragment
  */
 public class MusicFragment extends Fragment {
     /**轮播图*/
-    @BindView(R.id.viewpager) ViewPager mViewPager;
+    @BindView(R.id.viewpager_slideshow) ViewPager mViewPager;
     /**显示歌手信息的listView*/
-    @BindView(R.id.list) ListView mListView;
+    @BindView(R.id.listview_singer_info) ListView mListView;
     /**轮播指示器*/
     @BindView(R.id.point_container) LinearLayout mPointContainer;
     /**省份*/
@@ -62,6 +64,7 @@ public class MusicFragment extends Fragment {
     private final int DELAY_TIME=5*1000;
     /**消息的标识*/
     private final int MESSAGE_WHAT=0X01;
+    /**fragment管理器*/
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
 
@@ -102,8 +105,10 @@ public class MusicFragment extends Fragment {
     }
     /**初始化视图*/
     private void initViews(){
-        mTextViewProvince.setText(getActivity().getIntent().getStringExtra("province"));
-        mTextViewCity.setText(getActivity().getIntent().getStringExtra("district"));
+        if(((BangMusicApplication)getActivity().getApplication()).getLocationCity()!="") {
+            mTextViewProvince.setText(((BangMusicApplication) getActivity().getApplication()).getLocationCity());
+            mTextViewCity.setText(((BangMusicApplication) getActivity().getApplication()).getLocationDistrict());
+        }
         mlayoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         //设置圆点之间的距离
@@ -154,12 +159,11 @@ public class MusicFragment extends Fragment {
         Intent intent=new Intent(getActivity(),MapActivity.class);
         startActivity(intent);
     }
+    /**绑定搜索按钮的相应事件*/
     @OnClick(R.id.button_search_activity_main)
     public void replaceFragment(View view){
-        transaction=fragmentManager.beginTransaction();
-        transaction.replace(R.id.id_linearlayout_main,new SearchFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        Intent intent=new Intent(getActivity(), SearchActivity.class);
+        startActivity(intent);
     }
 
 }

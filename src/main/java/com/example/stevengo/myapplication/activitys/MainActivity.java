@@ -3,25 +3,25 @@ package com.example.stevengo.myapplication.activitys;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.fragments.InfoFragment;
 import com.example.stevengo.myapplication.fragments.MusicFragment;
 import com.example.stevengo.myapplication.fragments.MyFragment;
-import com.example.stevengo.myapplication.fragments.NavigationBarFragment;
-import com.example.stevengo.myapplication.fragments.SearchFragment;
-import com.example.stevengo.myapplication.fragments.SearchResultFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+/**
+ * 主页面，显示音乐fragment和导航栏
+ * */
+public class MainActivity extends BaseActivity implements View.OnClickListener{
     /**音乐图标*/
     @BindView(R.id.id_imageview_icon_music)
     ImageView mIconMusic;
@@ -31,6 +31,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**我的图标*/
     @BindView(R.id.id_imageview_icon_my)
     ImageView mIconMy;
+    /**音乐图标的容器*/
+    @BindView(R.id.id_linearlayout_navigation_music)
+    LinearLayout mLinearLayoutMusic;
+    /**资讯图标的容器*/
+    @BindView(R.id.id_linearlayout_navigation_info)
+    LinearLayout mLinearLayoutInfo;
+    /**我的图标的容器*/
+    @BindView(R.id.id_linearlayout_navigation_my)
+    LinearLayout mLinearLayoutMy;
+
     /**fragment管理器*/
     FragmentManager fragmentManager;
 
@@ -38,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //加载布局
-        setContentView(R.layout.activity_main_2);
+        setContentView(R.layout.activity_main);
+        //绑定组件
         ButterKnife.bind(this);
         fragmentManager=getFragmentManager();
         //清除icon的设置效果
@@ -46,10 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //设置默认的fragment
         setDefaultFragment();
         //对navigationbar的三个按钮设置监听
-        mIconMusic.setOnClickListener(this);
-        mIconInfo.setOnClickListener(this);
-        mIconMy.setOnClickListener(this);
+        mLinearLayoutMusic.setOnClickListener(this);
+        mLinearLayoutInfo.setOnClickListener(this);
+        mLinearLayoutMy.setOnClickListener(this);
     }
+
     /**清除按钮的显示效果*/
     private void clearIcon(){
         mIconMusic.setSelected(false);
@@ -70,26 +82,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         //1.清除icon的显示效果
         //2.将当前点击的按钮设置为选中状态
-        //3.将上一个fragment弹出栈
-        //4.修改fragment
+        //3.修改fragment
         Log.d("StevenGo",String.valueOf(fragmentManager.getBackStackEntryCount()));
         switch (view.getId()){
-            case R.id.id_imageview_icon_music:
+            case R.id.id_linearlayout_navigation_music:
                 clearIcon();
                 mIconMusic.setSelected(true);
-                popBackstacks();
                 changeFragment(new MusicFragment());
                 break;
-            case R.id.id_imageview_icon_info:
+            case R.id.id_linearlayout_navigation_info:
                 clearIcon();
                 mIconInfo.setSelected(true);
-                popBackstacks();
                 changeFragment(new InfoFragment());
                 break;
-            case R.id.id_imageview_icon_my:
+            case R.id.id_linearlayout_navigation_my:
                 clearIcon();
                 mIconMy.setSelected(true);
-                popBackstacks();
                 changeFragment(new MyFragment());
                 break;
         }
@@ -101,11 +109,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //transaction.addToBackStack(null);
         transaction.commit();
     }
-    /**弹出返回栈中的内容*/
-    private void popBackstacks(){
-        int count=fragmentManager.getBackStackEntryCount();
-        for(int i=0;i<count;i++){
-            fragmentManager.popBackStack();
+    /**重写返回键的监听，直接结束掉本activity*/
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            finish();
         }
+        return true;
+    }
+    @Override
+    protected View getCustomerActionBar() {
+        return null;
     }
 }

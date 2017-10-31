@@ -12,11 +12,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.stevengo.myapplication.R;
 import com.example.stevengo.myapplication.utils.PermissionsChecker;
 
-public class PermissionsActivity extends AppCompatActivity {
+public class PermissionsActivity extends BaseActivity {
 
     /**权限授权*/
     public static final int PERMISSIONS_GRANTED = 0;
@@ -50,6 +51,11 @@ public class PermissionsActivity extends AppCompatActivity {
 
         mChecker = new PermissionsChecker(this);
         isRequireCheck = true;
+    }
+
+    @Override
+    protected View getCustomerActionBar() {
+        return null;
     }
 
     @Override
@@ -137,7 +143,6 @@ public class PermissionsActivity extends AppCompatActivity {
 
         builder.show();
     }
-
     /**启动应用的设置*/
     private void startAppSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);

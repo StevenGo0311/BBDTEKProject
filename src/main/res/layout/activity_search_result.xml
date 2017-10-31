@@ -6,8 +6,18 @@
     android:orientation="vertical">
     <include
         layout="@layout/fragment_search_bar_disable"/>
-    <include
-        layout="@layout/fragment_search_exist_result"/>
-    <include
-        layout="@layout/fragment_search_no_result"/>
+
+    <TextView
+        android:id="@+id/search_no_result_textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/search_no_result" />
+    <com.example.stevengo.myapplication.views.SearchResultListView
+        android:id="@+id/search_listview_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/colorDivider"
+        android:dividerHeight="1dp">
+    </com.example.stevengo.myapplication.views.SearchResultListView>
 </LinearLayout>

@@ -1,8 +1,14 @@
 package com.example.stevengo.myapplication.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * Created by StevenGo on 2017/10/12.

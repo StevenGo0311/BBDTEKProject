@@ -305,13 +305,13 @@ public class SearchResultListView extends ListView implements OnScrollListener{
     }
     /**刷新数据接口*/
     public interface IRefreshListener{
-        public void onRefresh();
+        void onRefresh();
     }
     public void setInterfaceRefresh(IRefreshListener iRefreshListener){
         this.iRefreshListener=iRefreshListener;
     }
     public interface ILoadListener{
-        public void onLoad();
+        void onLoad();
     }
     public void setInterfaceLoad(ILoadListener iLoadListener){
         this.iLoadListener=iLoadListener;
