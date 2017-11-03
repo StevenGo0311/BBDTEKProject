@@ -19,19 +19,29 @@ import com.example.stevengo.myapplication.utils.PermissionsChecker;
 
 public class PermissionsActivity extends BaseActivity {
 
-    /**权限授权*/
+    /**
+     * 权限授权
+     */
     public static final int PERMISSIONS_GRANTED = 0;
-    /**权限拒绝*/
+    /**
+     * 权限拒绝
+     */
     public static final int PERMISSIONS_DENIED = 1;
-    /**系统权限管理页面的参数*/
+    /**
+     * 系统权限管理页面的参数
+     */
     private static final int PERMISSION_REQUEST_CODE = 0;
     private static final String EXTRA_PERMISSIONS =
             "com.example.stevengo.myapplication.permission.extra_permission";
     private static final String PACKAGE_URL_SCHEME = "package:";
 
-    /**权限检测器*/
+    /**
+     * 权限检测器
+     */
     private PermissionsChecker mChecker;
-    /**是否需要系统权限检测*/
+    /**
+     * 是否需要系统权限检测
+     */
     private boolean isRequireCheck;
 
     // 启动当前权限页面的公开接口
@@ -73,17 +83,23 @@ public class PermissionsActivity extends BaseActivity {
         }
     }
 
-    /**返回传递的权限参数*/
+    /**
+     * 返回传递的权限参数
+     */
     private String[] getPermissions() {
         return getIntent().getStringArrayExtra(EXTRA_PERMISSIONS);
     }
 
-    /**请求权限兼容低版本*/
+    /**
+     * 请求权限兼容低版本
+     */
     private void requestPermissions(String... permissions) {
         ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
     }
 
-    /**全部权限均已获取*/
+    /**
+     * 全部权限均已获取
+     */
     private void allPermissionsGranted() {
         setResult(PERMISSIONS_GRANTED);
         finish();
@@ -109,7 +125,9 @@ public class PermissionsActivity extends BaseActivity {
         }
     }
 
-    /**含有全部的权限*/
+    /**
+     * 含有全部的权限
+     */
     private boolean hasAllPermissionsGranted(@NonNull int[] grantResults) {
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
@@ -119,7 +137,9 @@ public class PermissionsActivity extends BaseActivity {
         return true;
     }
 
-    /**显示缺失权限提示*/
+    /**
+     * 显示缺失权限提示
+     */
     private void showMissingPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PermissionsActivity.this);
         builder.setTitle(R.string.help);
@@ -143,7 +163,10 @@ public class PermissionsActivity extends BaseActivity {
 
         builder.show();
     }
-    /**启动应用的设置*/
+
+    /**
+     * 启动应用的设置
+     */
     private void startAppSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getPackageName()));

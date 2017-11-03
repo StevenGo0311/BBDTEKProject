@@ -24,23 +24,40 @@ import butterknife.OnClick;
 
 /**
  * @author StevenGo
- * 显示搜索歌曲的界面，包括搜索历史
- * */
+ *         显示搜索歌曲的界面，包括搜索历史
+ */
 public class SearchActivity extends BaseActivity {
     //通过注解绑定组件
-    @BindView(R.id.id_imageview_back_search) ImageView mImageViewBack;
-    /**输入框*/
-    @BindView(R.id.search_edit_text) EditText mEditText;
-    /**搜索按钮*/
-    @BindView(R.id.search_button_search) Button mButton;
-    /**清除按钮*/
-    @BindView(R.id.button_clear) Button mButtonClear;
-    /**自定义的流式布局*/
-    @BindView(R.id.search_history) FlowLayout mFlowLayout;
+    @BindView(R.id.id_imageview_back_search)
+    ImageView mImageViewBack;
+    /**
+     * 输入框
+     */
+    @BindView(R.id.search_edit_text)
+    EditText mEditText;
+    /**
+     * 搜索按钮
+     */
+    @BindView(R.id.search_button_search)
+    Button mButton;
+    /**
+     * 清除按钮
+     */
+    @BindView(R.id.button_clear)
+    Button mButtonClear;
+    /**
+     * 自定义的流式布局
+     */
+    @BindView(R.id.search_history)
+    FlowLayout mFlowLayout;
 
-    /**记录搜索的关键字*/
+    /**
+     * 记录搜索的关键字
+     */
     private String editTextContent;
-    /**处理历史记录*/
+    /**
+     * 处理历史记录
+     */
     private DoHistoryServices mDoHistoryServices;
 
     @Override
@@ -59,17 +76,19 @@ public class SearchActivity extends BaseActivity {
         return null;
     }
 
-    /**向自定义的流式布局中添加历史记录*/
-    private void addViewAdapter(List<String> list){
+    /**
+     * 向自定义的流式布局中添加历史记录
+     */
+    private void addViewAdapter(List<String> list) {
         //定义TextView
         TextView textView;
         //清除容器中的所有内容
         mFlowLayout.removeAllViews();
         //根据查询到的历史记录添加组件
-        for(int i=0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             //通过反射加载TexView
-            View linearLayout=LayoutInflater.from(this).inflate(R.layout.history_item,null);
-            textView=(TextView) linearLayout.findViewById(R.id.history_item_id);
+            View linearLayout = LayoutInflater.from(this).inflate(R.layout.history_item, null);
+            textView = (TextView) linearLayout.findViewById(R.id.history_item_id);
             //设置TextView显示的内容
             textView.setText(list.get(i));
             //将textView添加到容器中
@@ -79,25 +98,27 @@ public class SearchActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     //启动新的界面
-                    startSearchActivity(((TextView)view).getText().toString());
+                    startSearchActivity(((TextView) view).getText().toString());
                 }
             });
         }
         //当没有历史记录的时候设置清除按钮不可见
-        if(list.size()==0){
+        if (list.size() == 0) {
             mButtonClear.setVisibility(View.GONE);
         }
     }
-    public void startSearchActivity(String searchText){
+
+    public void startSearchActivity(String searchText) {
         //创建Intent
         Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
         //向Intent添加要携带的数据
-        intent.putExtra("searchTextContent",searchText);
+        intent.putExtra("searchTextContent", searchText);
         //启动新的activity
         startActivity(intent);
     }
+
     @OnClick(R.id.search_button_search)
-    public void search(View view){
+    public void search(View view) {
         //获取输入框内容，并给去掉多余的空格
         editTextContent = mEditText.getText().toString().trim();
         //判断搜索的内容是否为空格
@@ -116,6 +137,7 @@ public class SearchActivity extends BaseActivity {
             showToast("搜索内容不能为空");
         }
     }
+
     @OnClick(R.id.button_clear)
     public void clearDistory(View view) {
         //删除历史记录
@@ -125,8 +147,9 @@ public class SearchActivity extends BaseActivity {
         //件清除按钮设置为隐藏
         mButtonClear.setVisibility(view.GONE);
     }
+
     @OnClick(R.id.id_imageview_back_search)
-    public void backSearch(){
+    public void backSearch() {
         finish();
     }
 }

@@ -2,15 +2,21 @@ package com.example.stevengo.myapplication.entitys;
 
 /**
  * @author StevenGo
- * 定义bean,封装ListviewItem中的数据
+ *         定义bean,封装ListviewItem中的数据
  */
 
 public class ListItemContentEntity {
-    /**姓名*/
+    /**
+     * 姓名
+     */
     private String name;
-    /**描述*/
+    /**
+     * 描述
+     */
     private String describe;
-    /**头像Id*/
+    /**
+     * 头像Id
+     */
     private int imageIconIds;
 
     public String getName() {

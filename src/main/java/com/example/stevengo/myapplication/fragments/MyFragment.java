@@ -12,14 +12,14 @@ import com.example.stevengo.myapplication.R;
 
 /**
  * 显示我的的fragment
- * */
+ */
 public class MyFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //加载布局
-        View view=inflater.inflate(R.layout.fragment_my,null);
+        View view = inflater.inflate(R.layout.fragment_my, null);
         return view;
     }
 

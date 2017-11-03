@@ -19,11 +19,11 @@ public class LocationUtil {
     public static Location getLocation(Context context) {
         //获取地理位置管理器
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager!=null){
+        if (locationManager != null) {
             //获取所有可用的位置提供器
             List<String> providers = locationManager.getProviders(true);
             String locationProvider = null;
-            String result="";
+            String result = "";
             if (providers.contains(LocationManager.GPS_PROVIDER)) {
                 //如果是GPS
                 locationProvider = LocationManager.GPS_PROVIDER;
@@ -36,7 +36,7 @@ public class LocationUtil {
             //获取Location
             Location location = locationManager.getLastKnownLocation(locationProvider);
             return location;
-        }else{
+        } else {
             return null;
         }
     }

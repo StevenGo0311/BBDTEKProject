@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <fragment
         tools:layout="@layout/fragment_navigation_bar"
         android:id="@+id/id_fragment_navigation"
@@ -13,12 +12,12 @@
         android:layout_alignParentBottom="true"
         android:name="com.example.stevengo.myapplication.fragments.NavigationBarFragment">
     </fragment>
-    <LinearLayout
-        android:id="@+id/id_linearlayout_main"
+    <FrameLayout
+        android:id="@+id/id_framelayout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
         android:layout_above="@id/id_fragment_navigation">
-    </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>

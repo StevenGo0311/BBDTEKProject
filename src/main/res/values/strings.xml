@@ -14,7 +14,7 @@
     <string name="relese_for_refresh">松开可以刷新</string>
     <string name="refreshing">正在刷新……</string>
     <string name="load_more">加载更多</string>
-    <string name="location_default">正在定位………</string>
+    <string name="location_default">正在定位</string>
     <string name="location_false">定位失败</string>
     <string name="settings">设置</string>
     <string name="help">帮助</string>

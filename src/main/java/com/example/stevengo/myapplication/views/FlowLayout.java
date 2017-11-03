@@ -15,17 +15,28 @@ import java.util.List;
  */
 
 public class FlowLayout extends ViewGroup {
-    /**上下文*/
+    /**
+     * 上下文
+     */
     private Context mContext;
-    /**有内容的宽度*/
+    /**
+     * 有内容的宽度
+     */
     private int usefulWidth;
-    /**行与行之间的距离*/
+    /**
+     * 行与行之间的距离
+     */
     private int lineSpacing = 0;
-    /**容器的子控件*/
+    /**
+     * 容器的子控件
+     */
     List<View> childList = new ArrayList();
 
     List<Integer> lineNumList = new ArrayList();
-    /**重写构造方法*/
+
+    /**
+     * 重写构造方法
+     */
     public FlowLayout(Context context) {
         this(context, null);
     }
@@ -38,7 +49,10 @@ public class FlowLayout extends ViewGroup {
         super(context, attrs, defStyleAttr);
         mContext = context;
     }
-    /**计算所有子组件的宽度和高度，然后根据计算结果设置自己的宽度和高度*/
+
+    /**
+     * 计算所有子组件的宽度和高度，然后根据计算结果设置自己的宽度和高度
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //获取上，下，左，右的Padding值
@@ -46,6 +60,7 @@ public class FlowLayout extends ViewGroup {
         int mPaddingRight = getPaddingRight();
         int mPaddingTop = getPaddingTop();
         int mPaddingBottom = getPaddingBottom();
+
         //获取其上级容器为其建议的宽度高度和计算模式
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -55,6 +70,7 @@ public class FlowLayout extends ViewGroup {
         int lineY = mPaddingTop;
         //行高初始化为0
         int lineHeight = 0;
+
         //遍历其所有的子控件
         for (int i = 0; i < this.getChildCount(); i++) {
             View child = this.getChildAt(i);
@@ -102,7 +118,10 @@ public class FlowLayout extends ViewGroup {
                 heightMode == MeasureSpec.EXACTLY ? heightSize : lineY + lineHeight + mPaddingBottom
         );
     }
-    /**对所有的child进行定位*/
+
+    /**
+     * 对所有的child进行定位
+     */
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         //获取左边，右边，上边的Pagdding值
@@ -139,6 +158,7 @@ public class FlowLayout extends ViewGroup {
             int childHeight = child.getMeasuredHeight();
 
             LayoutParams childLp = child.getLayoutParams();
+
             //判断子控件是否是MarginLayoutParams的对象
             if (childLp instanceof MarginLayoutParams) {
                 MarginLayoutParams mlp = (MarginLayoutParams) childLp;
@@ -159,8 +179,10 @@ public class FlowLayout extends ViewGroup {
                 right = lineX + childWidth;
                 bottom = lineY + childHeight;
             }
+
             spaceWidth += childWidth;
             spaceHeight += childHeight;
+
             //当同一行不能放置下一个控件的时候跳到下一行
             if (lineUsed + spaceWidth > lineWidth) {
                 lineNumList.add(lineNum);
@@ -182,8 +204,10 @@ public class FlowLayout extends ViewGroup {
                     bottom = lineY + childHeight;
                 }
             }
+
             child.layout(left, top, right, bottom);
-            lineNum ++;
+            lineNum++;
+
             if (spaceHeight > lineHeight) {
                 lineHeight = spaceHeight;
             }
@@ -192,10 +216,12 @@ public class FlowLayout extends ViewGroup {
         }
         lineNumList.add(lineNum);
     }
-    /**重写generateLayoutParams，确定该ViewGroup的LayoutParams返回MarginLayoutParams的实例*/
+
+    /**
+     * 重写generateLayoutParams，确定该ViewGroup的LayoutParams返回MarginLayoutParams的实例
+     */
     @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs)
-    {
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
 }

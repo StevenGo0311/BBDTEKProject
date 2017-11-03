@@ -14,11 +14,11 @@ import retrofit2.Response;
 /**
  * Created by StevenGo on 2017/10/12.
  * 转换数据的类
- *
  */
 
 public class FastJsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final Type type;
+
     public FastJsonResponseBodyConverter(Type type) {
         this.type = type;
     }

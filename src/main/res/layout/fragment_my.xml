@@ -2,9 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.stevengo.myapplication.fragments.MyFragment">
+    tools:context="com.example.stevengo.myapplication.fragments.MyFragment"
+    android:background="@color/colorBackgroundInfoAndMy">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/my" />
+        android:text="@string/my"
+        android:gravity="center"/>
 </FrameLayout>

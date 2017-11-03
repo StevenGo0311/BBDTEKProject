@@ -27,25 +27,27 @@ import java.util.List;
  */
 public class InternetUtilURLConnection {
     //超时时长
-    public static final int CONNECTTIMEOUT=5*1000;
-    /**从网络上读取数据的操作方法
+    public static final int CONNECTTIMEOUT = 5 * 1000;
+
+    /**
+     * 从网络上读取数据的操作方法
      */
-    public static List<MusicInfo> doGet(String url){
+    public static List<MusicInfo> doGet(String url) {
         //Log.d("StevenGo", "url: "+url);
         //创建List保存读取到的数据
-        List<MusicInfo> musiclist=new ArrayList<>();
-        MusicInfo musicInfo=null;
+        List<MusicInfo> musiclist = new ArrayList<>();
+        MusicInfo musicInfo = null;
         try {
             //创建URL
-            URL httpUrl=new URL(url);
+            URL httpUrl = new URL(url);
             //建立连接
-            HttpURLConnection httpURLConnection= (HttpURLConnection) httpUrl.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) httpUrl.openConnection();
             //设置超时时长为5s
             httpURLConnection.setConnectTimeout(CONNECTTIMEOUT);
             //设置请求方式为GET
             httpURLConnection.setRequestMethod("GET");
             //响应码为200,表示请求成功
-            if(httpURLConnection.getResponseCode()==200) {
+            if (httpURLConnection.getResponseCode() == 200) {
                 //创建输入流
                 InputStream inputStream = httpURLConnection.getInputStream();
                 //将输入流中的数据转换为字节数组
@@ -70,11 +72,11 @@ public class InternetUtilURLConnection {
                 }
             }
         } catch (MalformedURLException e) {
-            Log.d("StevenGo","抛出MalformedURLException异常");
+            Log.d("StevenGo", "抛出MalformedURLException异常");
         } catch (IOException e) {
-            Log.d("StevenGo","抛出IOException异常");
+            Log.d("StevenGo", "抛出IOException异常");
         } catch (JSONException e) {
-            Log.d("StevenGo","抛出JSONException异常");
+            Log.d("StevenGo", "抛出JSONException异常");
         }
         return musiclist;
     }
@@ -90,7 +92,10 @@ public class InternetUtilURLConnection {
 //
 //        return musiclist;
 //    }
-    /**将inputStream转换为byte[]的方法*/
+
+    /**
+     * 将inputStream转换为byte[]的方法
+     */
     private static byte[] readInputStream(InputStream inputStream) {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         //新建缓冲区域

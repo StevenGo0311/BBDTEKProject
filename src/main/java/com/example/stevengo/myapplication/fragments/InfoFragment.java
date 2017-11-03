@@ -19,7 +19,7 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //获取布局文件
-        View view=inflater.inflate(R.layout.fragment_info,null);
+        View view = inflater.inflate(R.layout.fragment_info, null);
         return view;
     }
 

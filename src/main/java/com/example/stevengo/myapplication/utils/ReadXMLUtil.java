@@ -20,38 +20,40 @@ import java.util.List;
  */
 
 public class ReadXMLUtil {
-    /**读取xml文件内容*/
-    public static List<MusicInfo> getMusic(Context context){
+    /**
+     * 读取xml文件内容
+     */
+    public static List<MusicInfo> getMusic(Context context) {
         //存储符合要求的音乐信息
-        List<MusicInfo> list=null;
+        List<MusicInfo> list = null;
         //暂存获取到的信息
-        MusicInfo music=null;
+        MusicInfo music = null;
         //将内容转换成小写字母
         try {
             //获取XmlPullParserFactory和XmlPullParser实例
-            XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
-            XmlPullParser pullParser=factory.newPullParser();
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser pullParser = factory.newPullParser();
             //指定欲读取的文件
-            InputStream inputStream=context.getClass().getResourceAsStream("/assets/musics.xml");
-            pullParser.setInput(inputStream,"utf-8");
+            InputStream inputStream = context.getClass().getResourceAsStream("/assets/musics.xml");
+            pullParser.setInput(inputStream, "utf-8");
             //开始
-            int eventType=pullParser.getEventType();
+            int eventType = pullParser.getEventType();
 
-            while(eventType!=XmlPullParser.END_DOCUMENT){
-                String nodeName=pullParser.getName();
-                switch (eventType){
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                String nodeName = pullParser.getName();
+                switch (eventType) {
                     //文档开始
                     case XmlPullParser.START_DOCUMENT:
-                        list=new ArrayList<>();
+                        list = new ArrayList<>();
                         break;
                     //扫描节点
                     case XmlPullParser.START_TAG:
-                        if("music".equals(nodeName)){
-                            music=new MusicInfo();
+                        if ("music".equals(nodeName)) {
+                            music = new MusicInfo();
                             //Log.d("StevenGo","读到music");
                         } else if ("name".equals(nodeName)) {
                             music.setName(pullParser.nextText());
-                        }else if("singer".equals(nodeName)){
+                        } else if ("singer".equals(nodeName)) {
                             music.setSinger(pullParser.nextText());
                         }
                         break;
@@ -67,12 +69,12 @@ public class ReadXMLUtil {
                         break;
                 }
                 //手工跳到下一个节点
-                eventType=pullParser.next();
+                eventType = pullParser.next();
             }
         } catch (XmlPullParserException e) {
-            Log.d("StevenGo","XmlPullParserException异常");
-        }catch (IOException e){
-            Log.d("StevenGo","IOException异常");
+            Log.d("StevenGo", "XmlPullParserException异常");
+        } catch (IOException e) {
+            Log.d("StevenGo", "IOException异常");
         }
         return list;
     }

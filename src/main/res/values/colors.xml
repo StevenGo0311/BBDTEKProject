@@ -18,4 +18,5 @@
     <color name="colorHistoryItemStroke">#bbbbbb</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorTitleAndNavigationBar">#e1e1e1</color>
+    <color name="colorBackgroundInfoAndMy">#888888</color>
 </resources>

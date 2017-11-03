@@ -7,10 +7,14 @@ import java.io.Serializable;
  * 音乐的实体，包括音乐名和歌手
  */
 
-public class MusicInfo implements Serializable{
-    /**音乐名称*/
+public class MusicInfo implements Serializable {
+    /**
+     * 音乐名称
+     */
     private String name;
-    /**歌手*/
+    /**
+     * 歌手
+     */
     private String singer;
 
     public String getName() {

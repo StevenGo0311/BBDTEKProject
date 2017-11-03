@@ -13,8 +13,11 @@ import retrofit2.Converter;
  * 自定义ConVerter类，实现用FastJson转换
  */
 public class FastJsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
-    /**定义数据类型*/
+    /**
+     * 定义数据类型
+     */
     private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=UTF-8");
+
     @Override
     public RequestBody convert(T value) throws IOException {
         return RequestBody.create(MEDIA_TYPE, JSON.toJSONBytes(value));

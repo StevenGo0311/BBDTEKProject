@@ -20,29 +20,56 @@ import butterknife.ButterKnife;
 
 /**
  * 主页面，显示音乐fragment和导航栏
- * */
-public class MainActivity extends BaseActivity implements View.OnClickListener{
-    /**音乐图标*/
+ */
+public class MainActivity extends BaseActivity implements View.OnClickListener {
+    /**
+     * 音乐图标
+     */
     @BindView(R.id.id_imageview_icon_music)
     ImageView mIconMusic;
-    /**资讯图标*/
+    /**
+     * 资讯图标
+     */
     @BindView(R.id.id_imageview_icon_info)
     ImageView mIconInfo;
-    /**我的图标*/
+    /**
+     * 我的图标
+     */
     @BindView(R.id.id_imageview_icon_my)
     ImageView mIconMy;
-    /**音乐图标的容器*/
+    /**
+     * 音乐图标的容器
+     */
     @BindView(R.id.id_linearlayout_navigation_music)
     LinearLayout mLinearLayoutMusic;
-    /**资讯图标的容器*/
+    /**
+     * 资讯图标的容器
+     */
     @BindView(R.id.id_linearlayout_navigation_info)
     LinearLayout mLinearLayoutInfo;
-    /**我的图标的容器*/
+    /**
+     * 我的图标的容器
+     */
     @BindView(R.id.id_linearlayout_navigation_my)
     LinearLayout mLinearLayoutMy;
 
-    /**fragment管理器*/
+    /**
+     * fragment管理器
+     */
     FragmentManager fragmentManager;
+    /**
+     * 音乐fragment
+     */
+    MusicFragment musicFragment;
+    /**
+     * 资讯fragment
+     */
+    InfoFragment infoFragment;
+    /**
+     * 我的fragment
+     */
+    MyFragment myFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,72 +78,93 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         //绑定组件
         ButterKnife.bind(this);
-        fragmentManager=getFragmentManager();
         //清除icon的设置效果
+        init();
         clearIcon();
         //设置默认的fragment
         setDefaultFragment();
+
         //对navigationbar的三个按钮设置监听
         mLinearLayoutMusic.setOnClickListener(this);
         mLinearLayoutInfo.setOnClickListener(this);
         mLinearLayoutMy.setOnClickListener(this);
     }
 
-    /**清除按钮的显示效果*/
-    private void clearIcon(){
+    /**
+     * 初始化
+     */
+    private void init() {
+        //得到fragment管理器
+        fragmentManager = getFragmentManager();
+        //创建可能用到的三个fragment
+        musicFragment = new MusicFragment();
+        infoFragment = new InfoFragment();
+        myFragment = new MyFragment();
+        //得到fragmentMangeer对象
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        //添加fragment
+        transaction.add(R.id.id_framelayout_main, musicFragment).add(R.id.id_framelayout_main, infoFragment).add(R.id.id_framelayout_main, myFragment);
+        //隐藏frgment
+        transaction.hide(musicFragment).hide(infoFragment).hide(myFragment);
+        transaction.commit();
+        //清除icon的选中状态
+        clearIcon();
+    }
+
+    /**
+     * 设置默认的fragment
+     */
+    private void setDefaultFragment() {
+        //1.将music设置为选中状态
+        mIconMusic.setSelected(true);
+        //2.显示音乐的fragment
+        fragmentManager.beginTransaction().show(musicFragment).commit();
+    }
+
+    /**
+     * 清除按钮的显示效果
+     */
+    private void clearIcon() {
         mIconMusic.setSelected(false);
         mIconInfo.setSelected(false);
         mIconMy.setSelected(false);
     }
-    /**设置默认的fragment*/
-    private void setDefaultFragment(){
-        //1.将music设置未选中状态
-        mIconMusic.setSelected(true);
-        //2.添加fragment
-        FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.id_linearlayout_main,new MusicFragment());
-        transaction.commit();
+
+    /**
+     * 隐藏所有的fragment
+     */
+    private void hideAllFragment() {
+        fragmentManager.beginTransaction().hide(musicFragment).hide(infoFragment).hide(myFragment).commit();
     }
 
     @Override
     public void onClick(View view) {
         //1.清除icon的显示效果
-        //2.将当前点击的按钮设置为选中状态
-        //3.修改fragment
-        Log.d("StevenGo",String.valueOf(fragmentManager.getBackStackEntryCount()));
-        switch (view.getId()){
+        //2.隐藏所有的fragment
+        //3.将当前点击的按钮设置为选中状态
+        //4.显示被选中的fragment
+        switch (view.getId()) {
             case R.id.id_linearlayout_navigation_music:
                 clearIcon();
+                hideAllFragment();
                 mIconMusic.setSelected(true);
-                changeFragment(new MusicFragment());
+                fragmentManager.beginTransaction().show(musicFragment).commit();
                 break;
             case R.id.id_linearlayout_navigation_info:
                 clearIcon();
+                hideAllFragment();
                 mIconInfo.setSelected(true);
-                changeFragment(new InfoFragment());
+                fragmentManager.beginTransaction().show(infoFragment).commit();
                 break;
             case R.id.id_linearlayout_navigation_my:
                 clearIcon();
+                hideAllFragment();
                 mIconMy.setSelected(true);
-                changeFragment(new MyFragment());
+                fragmentManager.beginTransaction().show(myFragment).commit();
                 break;
         }
     }
-    /**修改framgnet*/
-    private void changeFragment(Fragment fragment){
-        FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.replace(R.id.id_linearlayout_main,fragment);
-        //transaction.addToBackStack(null);
-        transaction.commit();
-    }
-    /**重写返回键的监听，直接结束掉本activity*/
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            finish();
-        }
-        return true;
-    }
+
     @Override
     protected View getCustomerActionBar() {
         return null;

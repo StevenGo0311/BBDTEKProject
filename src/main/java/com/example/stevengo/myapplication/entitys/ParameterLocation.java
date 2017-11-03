@@ -4,7 +4,6 @@ import retrofit2.Converter;
 
 /**
  * Created by StevenGo on 2017/10/17.
- *
  */
 
 public class ParameterLocation {
@@ -19,12 +18,14 @@ public class ParameterLocation {
     private String output;
     private String callback;
     private int homeocorp;
-    public ParameterLocation(){
+
+    public ParameterLocation() {
 
     }
-    public ParameterLocation(String key,String location ){
-        this.key=key;
-        this.location=location;
+
+    public ParameterLocation(String key, String location) {
+        this.key = key;
+        this.location = location;
     }
 
     public String getKey() {
@@ -115,17 +116,24 @@ public class ParameterLocation {
         this.homeocorp = homeocorp;
     }
 }
-class Coordinate{
-    /**经度*/
+
+class Coordinate {
+    /**
+     * 经度
+     */
     private double longitude;
-    /**纬度*/
+    /**
+     * 纬度
+     */
     private double latitude;
-    public Coordinate(){
+
+    public Coordinate() {
 
     }
-    public Coordinate(double longitude,double latitude){
-        this.longitude=longitude;
-        this.latitude=latitude;
+
+    public Coordinate(double longitude, double latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
@@ -146,6 +154,6 @@ class Coordinate{
 
     @Override
     public String toString() {
-        return String.valueOf(longitude)+","+String.valueOf(latitude);
+        return String.valueOf(longitude) + "," + String.valueOf(latitude);
     }
 }

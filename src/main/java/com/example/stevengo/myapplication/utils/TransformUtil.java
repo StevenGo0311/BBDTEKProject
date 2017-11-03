@@ -9,11 +9,13 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 /**
  * Created by StevenGo on 2017/9/14.
- *将文字转换成拼音或者首字母的工具类
+ * 将文字转换成拼音或者首字母的工具类
  */
 
 public class TransformUtil {
-    /**将字符串转化为其对应的汉语拼音*/
+    /**
+     * 将字符串转化为其对应的汉语拼音
+     */
     public static String toPhonetic(String content) {
         //将String类型的参数转化为字符数组
         char[] arrayText = content.toCharArray();
@@ -42,8 +44,9 @@ public class TransformUtil {
         }
         return transformed;
     }
+
     //将汉字转换成汉语拼音首字母
-    public static String toFirstPhonetic(String content){
+    public static String toFirstPhonetic(String content) {
         //将String类型的参数转化为字符数组
         char[] arrayText = content.toCharArray();
         //记录转化后的字符串
@@ -56,12 +59,13 @@ public class TransformUtil {
         defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
         //以v表示字符
         defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_V);
+
         try {
             for (int i = 0; i < arrayText.length; i++) {
                 //检查当前的字符是不是汉字
                 if (String.valueOf(arrayText[i]).matches("[\u4e00-\u9fa5]+")) {
                     //进行转换，并将其追加transformed
-                    transformed += PinyinHelper.toHanyuPinyinStringArray(arrayText[i], defaultFormat)[0].substring(0,1);
+                    transformed += PinyinHelper.toHanyuPinyinStringArray(arrayText[i], defaultFormat)[0].substring(0, 1);
                 } else {
                     //不是汉字的时候直接追加
                     transformed += arrayText[i];

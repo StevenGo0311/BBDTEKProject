@@ -6,13 +6,20 @@ package com.example.stevengo.myapplication.entitys;
  */
 
 public class Parameter {
-    /**关键字*/
+    /**
+     * 关键字
+     */
     private String kw;
-    /**页数*/
+    /**
+     * 页数
+     */
     private int pi;
-    /**页大小*/
+    /**
+     * 页大小
+     */
     private int pz;
-    public Parameter(){
+
+    public Parameter() {
 
     }
 
